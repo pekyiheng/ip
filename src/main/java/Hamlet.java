@@ -39,17 +39,38 @@ public class Hamlet {
                     Task newTask;
                     boolean validNewTask = true;
                     if (input.split(" ")[0].equals("todo")) {
-                        newTask = new Todo(input.replace("todo ", ""));
-                    } else if (input.split(" ")[0].equals("deadline")) {
-                        Pattern pattern = Pattern.compile("deadline (.+) /by (.+)");
+                        Pattern pattern = Pattern.compile("todo (.+)");
                         Matcher matcher = pattern.matcher(input);
+                        if (matcher.matches()) {
+                            String todoTask = matcher.group(1);
+                            newTask = new Todo(todoTask);
+                        } else {
+                            newTask = null;
+                            throw new TodoException();
+                        }
+                    } else if (input.split(" ")[0].equals("deadline")) {
+                        Pattern pattern = Pattern.compile("deadline (.*) /by (.*)");
+                        Matcher matcher = pattern.matcher(input);
+
                         if (matcher.matches()) {
                             String deadlineTask = matcher.group(1);
                             String by = matcher.group(2);
                             newTask = new Deadline(deadlineTask, by);
+                            /*
+                            if (deadlineTask.trim().equals("")) {
+                                newTask = null;
+                                throw new DescException("deadline");
+                            } else if (by.trim().equals("")) {
+                                throw new HamletException();
+                            }
+                            else {
+                                newTask = new Deadline(deadlineTask, by);
+                            }
+                             */
                         } else {
-                            newTask = null;
+                            throw new DeadlineException();
                         }
+
                     } else if (input.split(" ")[0].equals("event")) {
                         Pattern pattern = Pattern.compile("event (.+) /from (.+) /to (.+)");
                         Matcher matcher = pattern.matcher(input);
@@ -60,6 +81,7 @@ public class Hamlet {
                             newTask = new Event(eventTask, from, to);
                         } else {
                             newTask = null;
+                            throw new EventException();
                         }
                     } else {
                         validNewTask = false;
