@@ -53,7 +53,7 @@ I'm sorry, this command is not recognized. Accepted commands:
 - todo [desc]
 - deadline [desc] /by [when]
 - event [desc] /from [when] /to [when]
-
+- delete [index]
 ____________________________________________________________
 ____________________________________________________________
 The description of a todo cannot be empty.
@@ -63,6 +63,15 @@ The description or /by of a deadline cannot be empty.
 ____________________________________________________________
 ____________________________________________________________
 The description, /from, or /to of an event cannot be empty.
+____________________________________________________________
+____________________________________________________________
+ Noted. I've removed this task:
+[T][X] borrow book
+Now you have 2 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+	1.[D][ ] return book (by: Sunday)
+	2.[E][ ] project meeting (from: Mon 2pm to: 4pm)
 ____________________________________________________________
 ____________________________________________________________
 Bye. Hope to see you again!

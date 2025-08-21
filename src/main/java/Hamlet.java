@@ -1,4 +1,5 @@
 package main.java;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -6,7 +7,7 @@ import java.util.regex.Pattern;
 public class Hamlet {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        Task[] inputs = new Task[100];
+        ArrayList<Task> inputs = new ArrayList<>(100);
         int count = 0;
         String lineBreaks = "____________________________________________________________";
         System.out.println(lineBreaks);
@@ -20,22 +21,31 @@ public class Hamlet {
                     System.out.println("\t" + "I am Hamlet!");
                 } else if (input.equals("list")) {
                     for (int i = 0; i < count; i++) {
-                        Task curTask = inputs[i];
+                        Task curTask = inputs.get(i);
                         System.out.printf("\t%d.%s", i+1, curTask);
                     }
                 } else if (input.matches("mark \\d+")) {
-                    int indexToEdit = Integer.parseInt(input.replaceAll("[^\\d]", ""));
-                    Task curTask = inputs[indexToEdit - 1]; //inputs is 0-indexed
+                    int indexToEdit = Integer.parseInt(input.replaceAll("[^\\d]", "")) - 1; //inputs is 0-indexed
+                    Task curTask = inputs.get(indexToEdit);
                     curTask.markAsDone();
                     System.out.print("Nice! I've marked this task as done:\n");
                     System.out.print(curTask);
                 } else if (input.matches("unmark \\d+")) {
-                    int indexToEdit = Integer.parseInt(input.replaceAll("[^\\d]", ""));
-                    Task curTask = inputs[indexToEdit - 1]; //inputs is 0-indexed
+                    int indexToEdit = Integer.parseInt(input.replaceAll("[^\\d]", "")) - 1; //inputs is 0-indexed
+                    Task curTask = inputs.get(indexToEdit);
                     curTask.markAsUndone();
                     System.out.print("Ok, I've marked this task as not done yet:\n");
                     System.out.print(curTask);
-                } else {
+                }  else if (input.matches("delete \\d+")) {
+                    int indexToEdit = Integer.parseInt(input.replaceAll("[^\\d]", "")) - 1; //inputs is 0-indexed
+                    Task curTask = inputs.get(indexToEdit);
+                    inputs.remove(indexToEdit);
+                    count--;
+                    System.out.print(" Noted. I've removed this task:\n");
+                    System.out.print(curTask);
+                    System.out.printf("Now you have %d tasks in the list.\n", count);
+                }
+                else {
                     Task newTask;
                     boolean validNewTask = true;
                     if (input.split(" ")[0].equals("todo")) {
@@ -89,7 +99,7 @@ public class Hamlet {
                     }
 
                     if (validNewTask) {
-                        inputs[count] = newTask;
+                        inputs.add(newTask);
                         count++;
                         System.out.print("Got it. I've added this task:\n");
                         System.out.print(newTask);

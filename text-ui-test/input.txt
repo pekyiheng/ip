@@ -11,4 +11,6 @@ blah
 todo
 deadline work /by
 event birthday /from 2pm /to
+delete 1
+list
 bye
