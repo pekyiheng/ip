@@ -17,55 +17,61 @@ public class Hamlet {
         while (!input.equals("bye")) {
             try {
                 System.out.println(lineBreaks);
-                if (input.equals("what is your name")) {
-                    System.out.println("\t" + "I am Hamlet!");
-                } else if (input.equals("list")) {
-                    for (int i = 0; i < count; i++) {
-                        Task curTask = inputs.get(i);
-                        System.out.printf("\t%d.%s", i+1, curTask);
-                    }
-                } else if (input.matches("mark \\d+")) {
-                    int indexToEdit = Integer.parseInt(input.replaceAll("[^\\d]", "")) - 1; //inputs is 0-indexed
-                    Task curTask = inputs.get(indexToEdit);
-                    curTask.markAsDone();
-                    System.out.print("Nice! I've marked this task as done:\n");
-                    System.out.print(curTask);
-                } else if (input.matches("unmark \\d+")) {
-                    int indexToEdit = Integer.parseInt(input.replaceAll("[^\\d]", "")) - 1; //inputs is 0-indexed
-                    Task curTask = inputs.get(indexToEdit);
-                    curTask.markAsUndone();
-                    System.out.print("Ok, I've marked this task as not done yet:\n");
-                    System.out.print(curTask);
-                }  else if (input.matches("delete \\d+")) {
-                    int indexToEdit = Integer.parseInt(input.replaceAll("[^\\d]", "")) - 1; //inputs is 0-indexed
-                    Task curTask = inputs.get(indexToEdit);
-                    inputs.remove(indexToEdit);
-                    count--;
-                    System.out.print(" Noted. I've removed this task:\n");
-                    System.out.print(curTask);
-                    System.out.printf("Now you have %d tasks in the list.\n", count);
-                }
-                else {
-                    Task newTask;
-                    boolean validNewTask = true;
-                    if (input.split(" ")[0].equals("todo")) {
-                        Pattern pattern = Pattern.compile("todo (.+)");
-                        Matcher matcher = pattern.matcher(input);
-                        if (matcher.matches()) {
-                            String todoTask = matcher.group(1);
-                            newTask = new Todo(todoTask);
-                        } else {
-                            newTask = null;
-                            throw new TodoException();
-                        }
-                    } else if (input.split(" ")[0].equals("deadline")) {
-                        Pattern pattern = Pattern.compile("deadline (.*) /by (.*)");
-                        Matcher matcher = pattern.matcher(input);
+                Command commandType = Command.checkCommand(input);
+                Task newTask = null;
+                switch (commandType) {
+                    case NAME:
+                        System.out.println("\t" + "I am Hamlet!");
+                        break;
 
-                        if (matcher.matches()) {
-                            String deadlineTask = matcher.group(1);
-                            String by = matcher.group(2);
-                            newTask = new Deadline(deadlineTask, by);
+                    case LIST:
+                        for (int i = 0; i < count; i++) {
+                            Task curTask = inputs.get(i);
+                            System.out.printf("\t%d.%s", i+1, curTask);
+                        }
+                        break;
+
+                    case MARK: {
+                        int indexToEdit = Integer.parseInt(input.replaceAll("[^\\d]", "")) - 1; //inputs is 0-indexed
+                        Task curTask = inputs.get(indexToEdit);
+                        curTask.markAsDone();
+                        System.out.print("Nice! I've marked this task as done:\n");
+                        System.out.print(curTask);
+                        break;
+                    }
+
+                    case UNMARK: {
+                        int indexToEdit = Integer.parseInt(input.replaceAll("[^\\d]", "")) - 1; //inputs is 0-indexed
+                        Task curTask = inputs.get(indexToEdit);
+                        curTask.markAsUndone();
+                        System.out.print("Ok, I've marked this task as not done yet:\n");
+                        System.out.print(curTask);
+                        break;
+                    }
+
+                    case TODO, DEADLINE, EVENT: {
+                        switch (commandType) {
+                            case TODO: {
+                                Pattern pattern = Pattern.compile("todo (.+)");
+                                Matcher matcher = pattern.matcher(input);
+                                if (matcher.matches()) {
+                                    String todoTask = matcher.group(1);
+                                    newTask = new Todo(todoTask);
+                                } else {
+                                    newTask = null;
+                                    throw new TodoException();
+                                }
+                                break;
+                            }
+
+                            case DEADLINE: {
+                                Pattern pattern = Pattern.compile("deadline (.*) /by (.*)");
+                                Matcher matcher = pattern.matcher(input);
+
+                                if (matcher.matches()) {
+                                    String deadlineTask = matcher.group(1);
+                                    String by = matcher.group(2);
+                                    newTask = new Deadline(deadlineTask, by);
                             /*
                             if (deadlineTask.trim().equals("")) {
                                 newTask = null;
@@ -77,36 +83,48 @@ public class Hamlet {
                                 newTask = new Deadline(deadlineTask, by);
                             }
                              */
-                        } else {
-                            throw new DeadlineException();
-                        }
+                                } else {
+                                    throw new DeadlineException();
+                                }
+                                break;
+                            }
 
-                    } else if (input.split(" ")[0].equals("event")) {
-                        Pattern pattern = Pattern.compile("event (.+) /from (.+) /to (.+)");
-                        Matcher matcher = pattern.matcher(input);
-                        if (matcher.matches()) {
-                            String eventTask = matcher.group(1);
-                            String from = matcher.group(2);
-                            String to = matcher.group(3);
-                            newTask = new Event(eventTask, from, to);
-                        } else {
-                            newTask = null;
-                            throw new EventException();
+                            case EVENT: {
+                                Pattern pattern = Pattern.compile("event (.+) /from (.+) /to (.+)");
+                                Matcher matcher = pattern.matcher(input);
+                                if (matcher.matches()) {
+                                    String eventTask = matcher.group(1);
+                                    String from = matcher.group(2);
+                                    String to = matcher.group(3);
+                                    newTask = new Event(eventTask, from, to);
+                                } else {
+                                    newTask = null;
+                                    throw new EventException();
+                                }
+                                break;
+                            }
                         }
-                    } else {
-                        validNewTask = false;
-                        newTask = null;
-                    }
-
-                    if (validNewTask) {
                         inputs.add(newTask);
                         count++;
                         System.out.print("Got it. I've added this task:\n");
                         System.out.print(newTask);
                         System.out.printf("Now you have %d tasks in the list.\n", count);
-                    } else {
-                        throw new HamletException();
+                        break;
                     }
+
+
+                    case DELETE: {
+                        int indexToEdit = Integer.parseInt(input.replaceAll("[^\\d]", "")) - 1; //inputs is 0-indexed
+                        Task curTask = inputs.get(indexToEdit);
+                        inputs.remove(indexToEdit);
+                        count--;
+                        System.out.print(" Noted. I've removed this task:\n");
+                        System.out.print(curTask);
+                        System.out.printf("Now you have %d tasks in the list.\n", count);
+                        break;
+                    }
+                    case INVALID:
+                        throw new HamletException();
                 }
             } catch (HamletException err) {
                 System.out.println(err);
