@@ -3,13 +3,30 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.io.File;
+import java.io.IOException;
 
 public class Hamlet {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         ArrayList<Task> inputs = new ArrayList<>(100);
+        final String filePath = "./hamlet.txt";
         int count = 0;
         String lineBreaks = "____________________________________________________________";
+
+        //handle file does not exist
+        File file = new File(filePath);
+        try {
+            if (file.createNewFile()) {
+                System.out.println("File created");
+            } else {
+                System.out.println("File exists!");
+            }
+
+        } catch (IOException e) {
+            System.out.println("Cannot create file");
+        }
+
         System.out.println(lineBreaks);
         System.out.println("Hello! I'm Hamlet\nHow may I help you?");
         String input = scanner.nextLine();
