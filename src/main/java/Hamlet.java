@@ -4,13 +4,18 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 
+
 public class Hamlet {
+    final static String filePath = "./hamlet.txt";
+    static ArrayList<Task> inputs = new ArrayList<>(100);
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        ArrayList<Task> inputs = new ArrayList<>(100);
-        final String filePath = "./hamlet.txt";
+
+
         int count = 0;
         String lineBreaks = "____________________________________________________________";
 
@@ -150,8 +155,41 @@ public class Hamlet {
                 input = scanner.nextLine();
             }
         }
+
+        String textToSave = convertArrToString();
+
+        //writes and saves to file in csv format
+        try {
+            writeToFile(filePath, textToSave);
+        } catch (IOException e) {
+            System.out.println("Failed to write to file.");
+        }
+
+
         System.out.println(lineBreaks);
         System.out.println("Bye. Hope to see you again!\n");
         System.out.println(lineBreaks);
+    }
+
+    private static void writeToFile(String filePath, String textToAdd) throws IOException {
+        FileWriter fw = new FileWriter(filePath);
+        fw.write(textToAdd);
+        fw.close();
+    }
+
+    private static String convertArrToString() {
+        String finalString = "";
+        for (Task task : inputs) {
+            finalString = finalString + task.getShorthand() + "," + task.isDone() + "," + task.description;
+            if (task instanceof Deadline) {
+                finalString += "," + ((Deadline) task).by;
+            } else if (task instanceof Event) {
+                finalString += "," + ((Event) task).from + "," + ((Event) task).to;
+            }
+
+            finalString += "\n";
+        }
+
+        return finalString;
     }
 }

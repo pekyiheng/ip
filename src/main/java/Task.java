@@ -13,6 +13,14 @@ public class Task {
         return (isDone ? "X" : " "); // mark done task with X
     }
 
+    public String getShorthand() {
+        return "";
+    }
+
+    public int isDone() {
+        return isDone ? 1 : 0;
+    }
+
     public void markAsDone() {
         this.isDone = true;
     }

@@ -9,6 +9,11 @@ public class Deadline extends Task{
     }
 
     @Override
+    public String getShorthand() {
+        return "D";
+    }
+
+    @Override
     public String toString() {
         return String.format("[D]%s (by: %s)%n", super.toString(), this.by);
     }
