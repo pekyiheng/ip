@@ -10,7 +10,8 @@ public enum Command {
     TODO,
     DEADLINE,
     EVENT,
-    INVALID;
+    INVALID,
+    HAPPENING;
 
     public static Command checkCommand(String input) {
         String trimmedInput = input.trim();
@@ -40,6 +41,9 @@ public enum Command {
         }
         if (trimmedInput.startsWith("event")) {
             return EVENT;
+        }
+        if (trimmedInput.startsWith("happening")) {
+            return HAPPENING;
         }
         return INVALID;
     }

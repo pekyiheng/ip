@@ -142,6 +142,28 @@ public class Hamlet {
                         System.out.printf("Now you have %d tasks in the list.\n", count);
                         break;
                     }
+                    case HAPPENING: {
+                        Pattern pattern = Pattern.compile("happening /on (.+)");
+                        Matcher matcher = pattern.matcher(input);
+                        LocalDate dateToCheck;
+                        if (matcher.matches()) {
+                            dateToCheck = LocalDate.parse(matcher.group(1), dateTimeFormatterYYYYMMDD);
+
+                            String deadlinesOnDate = "";
+                            String eventsOnDate = "";
+                            for (int i = 0; i < count; i++) {
+                                Task curTask = inputs.get(i);
+                                if (curTask instanceof Deadline && ((Deadline) curTask).by.equals(dateToCheck)) {
+                                    deadlinesOnDate += curTask.toString();
+                                } else if (curTask instanceof Event && ((Event) curTask).from.equals(dateToCheck)) {
+                                    eventsOnDate += curTask.toString();
+                                }
+                            }
+
+                            System.out.println("Deadline:\n" + deadlinesOnDate + "\nEvents:\n" + eventsOnDate);
+                        }
+                        break;
+                    }
                     case INVALID:
                         throw new HamletException();
                 }
