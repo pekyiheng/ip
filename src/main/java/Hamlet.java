@@ -10,6 +10,7 @@ import java.io.FileWriter;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 
 public class Hamlet {
@@ -113,7 +114,7 @@ public class Hamlet {
                                     String from = matcher.group(2);
                                     String to = matcher.group(3);
                                     LocalDate fromDate = LocalDate.parse(from, dateTimeFormatterYYYYMMDD);
-                                    LocalDate toDate = LocalDate.parse(from, dateTimeFormatterYYYYMMDD);
+                                    LocalDate toDate = LocalDate.parse(to, dateTimeFormatterYYYYMMDD);
                                     newTask = new Event(eventTask, fromDate, toDate);
                                 } else {
                                     newTask = null;
@@ -146,6 +147,8 @@ public class Hamlet {
                 }
             } catch (HamletException err) {
                 System.out.println(err);
+            } catch (DateTimeParseException dateTimeParseException) {
+                System.out.println("Invalid date format. Please use YYYY-MM-DD");
             } finally {
                 System.out.println(lineBreaks);
                 input = scanner.nextLine();
