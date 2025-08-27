@@ -11,6 +11,11 @@ public class Event extends Task{
     }
 
     @Override
+    public String getShorthand() {
+        return "E";
+    }
+
+    @Override
     public String toString() {
         return String.format("[E]%s (from: %s to: %s)%n", super.toString(), this.from, this.to);
     }
