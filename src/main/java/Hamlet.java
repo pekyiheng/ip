@@ -5,18 +5,17 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 
 public class Hamlet {
     final static String filePath = "./hamlet.txt";
     static ArrayList<Task> inputs = new ArrayList<>(100);
+    static int count = 0;
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-
-
-        int count = 0;
         String lineBreaks = "____________________________________________________________";
 
         //handle file does not exist
@@ -25,7 +24,7 @@ public class Hamlet {
             if (file.createNewFile()) {
                 System.out.println("File created");
             } else {
-                System.out.println("File exists!");
+                readFileContents(filePath);
             }
 
         } catch (IOException e) {
@@ -161,6 +160,7 @@ public class Hamlet {
         //writes and saves to file in csv format
         try {
             writeToFile(filePath, textToSave);
+            System.out.println("Wrote to file");
         } catch (IOException e) {
             System.out.println("Failed to write to file.");
         }
@@ -191,5 +191,38 @@ public class Hamlet {
         }
 
         return finalString;
+    }
+
+    private static void readFileContents(String filePath) throws FileNotFoundException {
+        File f = new File(filePath); // create a File for the given file path
+        Scanner s = new Scanner(f); // create a Scanner using the File as the source
+        while (s.hasNext()) {
+            String curRow = s.nextLine();
+            String[] values = curRow.split(",");
+            count++;
+            switch (values[0]) {
+                case "T":
+                    Todo newTodo = new Todo(values[2]);
+                    if (values[1].equals("1")) {
+                        newTodo.markAsDone();
+                    }
+                    inputs.add(newTodo);
+                    break;
+                case "D":
+                    Deadline newDeadline = new Deadline(values[2], values[3]);
+                    if (values[1].equals("1")) {
+                        newDeadline.markAsDone();
+                    }
+                    inputs.add(newDeadline);
+                    break;
+                case "E":
+                    Event newEvent = new Event(values[2], values[3], values[4]);
+                    if (values[1].equals("1")) {
+                        newEvent.markAsDone();
+                    }
+                    inputs.add(newEvent);
+                    break;
+            }
+        }
     }
 }
