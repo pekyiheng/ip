@@ -1,5 +1,4 @@
 package main.java;
-
 import java.time.format.DateTimeFormatter;
 
 public class Deadline extends Task{

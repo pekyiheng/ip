@@ -112,7 +112,9 @@ public class Hamlet {
                                     String eventTask = matcher.group(1);
                                     String from = matcher.group(2);
                                     String to = matcher.group(3);
-                                    newTask = new Event(eventTask, from, to);
+                                    LocalDate fromDate = LocalDate.parse(from, dateTimeFormatterYYYYMMDD);
+                                    LocalDate toDate = LocalDate.parse(from, dateTimeFormatterYYYYMMDD);
+                                    newTask = new Event(eventTask, fromDate, toDate);
                                 } else {
                                     newTask = null;
                                     throw new EventException();
@@ -212,7 +214,9 @@ public class Hamlet {
                     inputs.add(newDeadline);
                     break;
                 case "E":
-                    Event newEvent = new Event(values[2], values[3], values[4]);
+                    LocalDate fromDate = LocalDate.parse(values[3], dateTimeFormatterYYYYMMDD);
+                    LocalDate toDate = LocalDate.parse(values[4], dateTimeFormatterYYYYMMDD);
+                    Event newEvent = new Event(values[2], fromDate, toDate);
                     if (values[1].equals("1")) {
                         newEvent.markAsDone();
                     }
