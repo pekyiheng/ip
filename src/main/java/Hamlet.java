@@ -1,4 +1,6 @@
 package main.java;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -7,12 +9,15 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.time.format.DateTimeFormatter;
 
 
 public class Hamlet {
     final static String filePath = "./hamlet.txt";
     static ArrayList<Task> inputs = new ArrayList<>(100);
     static int count = 0;
+    static DateTimeFormatter dateTimeFormatterYYYYMMDD = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -92,18 +97,8 @@ public class Hamlet {
                                 if (matcher.matches()) {
                                     String deadlineTask = matcher.group(1);
                                     String by = matcher.group(2);
-                                    newTask = new Deadline(deadlineTask, by);
-                            /*
-                            if (deadlineTask.trim().equals("")) {
-                                newTask = null;
-                                throw new DescException("deadline");
-                            } else if (by.trim().equals("")) {
-                                throw new HamletException();
-                            }
-                            else {
-                                newTask = new Deadline(deadlineTask, by);
-                            }
-                             */
+                                    LocalDate deadlineDate = LocalDate.parse(by, dateTimeFormatterYYYYMMDD);
+                                    newTask = new Deadline(deadlineTask, deadlineDate);
                                 } else {
                                     throw new DeadlineException();
                                 }
@@ -209,7 +204,8 @@ public class Hamlet {
                     inputs.add(newTodo);
                     break;
                 case "D":
-                    Deadline newDeadline = new Deadline(values[2], values[3]);
+                    LocalDate deadlineDate = LocalDate.parse(values[3], dateTimeFormatterYYYYMMDD);
+                    Deadline newDeadline = new Deadline(values[2], deadlineDate);
                     if (values[1].equals("1")) {
                         newDeadline.markAsDone();
                     }

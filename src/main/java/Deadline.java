@@ -1,9 +1,13 @@
 package main.java;
 
-public class Deadline extends Task{
-    protected String by;
+import java.time.format.DateTimeFormatter;
 
-    public Deadline(String description, String by) {
+public class Deadline extends Task{
+    static DateTimeFormatter dateTimeFormatterMMMDDYYYY = DateTimeFormatter.ofPattern("MMM dd yyyy");
+    protected java.time.LocalDate by;
+
+
+    public Deadline(String description, java.time.LocalDate by) {
         super(description);
         this.by = by;
     }
@@ -15,6 +19,7 @@ public class Deadline extends Task{
 
     @Override
     public String toString() {
-        return String.format("[D]%s (by: %s)%n", super.toString(), this.by);
+        String formattedDate = this.by.format(dateTimeFormatterMMMDDYYYY);
+        return String.format("[D]%s (by: %s)%n", super.toString(), formattedDate);
     }
 }
