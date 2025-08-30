@@ -15,27 +15,17 @@ import java.time.format.DateTimeParseException;
 
 public class Hamlet {
     final static String filePath = "./hamlet.txt";
+
     static ArrayList<Task> inputs = new ArrayList<>(100);
     static int count = 0;
     static DateTimeFormatter dateTimeFormatterYYYYMMDD = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    private Storage storage;
 
-
-    public static void main(String[] args) {
+    public void run() {
         Scanner scanner = new Scanner(System.in);
         String lineBreaks = "____________________________________________________________";
 
-        //handle file does not exist
-        File file = new File(filePath);
-        try {
-            if (file.createNewFile()) {
-                System.out.println("File created");
-            } else {
-                readFileContents(filePath);
-            }
 
-        } catch (IOException e) {
-            System.out.println("Cannot create file");
-        }
 
         System.out.println(lineBreaks);
         System.out.println("Hello! I'm Hamlet\nHow may I help you?");
@@ -181,7 +171,7 @@ public class Hamlet {
 
         //writes and saves to file in csv format
         try {
-            writeToFile(filePath, textToSave);
+            storage.writeToFile(textToSave);
             System.out.println("Wrote to file");
         } catch (IOException e) {
             System.out.println("Failed to write to file.");
@@ -193,11 +183,11 @@ public class Hamlet {
         System.out.println(lineBreaks);
     }
 
-    private static void writeToFile(String filePath, String textToAdd) throws IOException {
-        FileWriter fw = new FileWriter(filePath);
-        fw.write(textToAdd);
-        fw.close();
+
+    public static void main(String[] args) {
+        new Hamlet().run();
     }
+
 
     private static String convertArrToString() {
         String finalString = "";
@@ -215,39 +205,4 @@ public class Hamlet {
         return finalString;
     }
 
-    private static void readFileContents(String filePath) throws FileNotFoundException {
-        File f = new File(filePath); // create a File for the given file path
-        Scanner s = new Scanner(f); // create a Scanner using the File as the source
-        while (s.hasNext()) {
-            String curRow = s.nextLine();
-            String[] values = curRow.split(",");
-            count++;
-            switch (values[0]) {
-                case "T":
-                    Todo newTodo = new Todo(values[2]);
-                    if (values[1].equals("1")) {
-                        newTodo.markAsDone();
-                    }
-                    inputs.add(newTodo);
-                    break;
-                case "D":
-                    LocalDate deadlineDate = LocalDate.parse(values[3], dateTimeFormatterYYYYMMDD);
-                    Deadline newDeadline = new Deadline(values[2], deadlineDate);
-                    if (values[1].equals("1")) {
-                        newDeadline.markAsDone();
-                    }
-                    inputs.add(newDeadline);
-                    break;
-                case "E":
-                    LocalDate fromDate = LocalDate.parse(values[3], dateTimeFormatterYYYYMMDD);
-                    LocalDate toDate = LocalDate.parse(values[4], dateTimeFormatterYYYYMMDD);
-                    Event newEvent = new Event(values[2], fromDate, toDate);
-                    if (values[1].equals("1")) {
-                        newEvent.markAsDone();
-                    }
-                    inputs.add(newEvent);
-                    break;
-            }
-        }
-    }
 }
