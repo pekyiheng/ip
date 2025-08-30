@@ -1,6 +1,6 @@
-package main.java;
+package main.java.exception;
 
-public class EventException extends HamletException{
+public class EventException extends HamletException {
     @Override
     public String toString() {
         return "The description, /from, or /to of an event cannot be empty.";

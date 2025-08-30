@@ -1,6 +1,6 @@
-package main.java;
+package main.java.exception;
 
-public class TodoException extends HamletException{
+public class TodoException extends HamletException {
 
     @Override
     public String toString() {
