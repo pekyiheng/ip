@@ -2,6 +2,7 @@ package main.java.task;
 
 import main.java.*;
 import main.java.exception.HamletException;
+import main.java.parser.Parser;
 import main.java.ui.Ui;
 
 import java.io.File;

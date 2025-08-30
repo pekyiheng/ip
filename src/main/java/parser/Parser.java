@@ -1,4 +1,4 @@
-package main.java;
+package main.java.parser;
 
 import main.java.exception.DeadlineException;
 import main.java.exception.EventException;
