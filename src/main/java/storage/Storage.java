@@ -1,4 +1,4 @@
-package main.java;
+package main.java.storage;
 
 import java.io.File;
 import java.io.FileWriter;
