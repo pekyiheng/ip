@@ -13,10 +13,14 @@ public class Storage {
     static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private String filePath;
     static ArrayList<Task> inputs = new ArrayList<>(100);
-    static int count = 0;
+    public int count = 0;
 
     public Storage(String filePath) {
         this.filePath = filePath;
+    }
+
+    public int getCount() {
+        return count;
     }
 
     public ArrayList<Task> load() {

@@ -26,6 +26,8 @@ public class Hamlet {
 
     public void run() {
         Scanner scanner = new Scanner(System.in);
+        inputs = storage.load();
+        count = storage.getCount();
         ui.welcomeMessage();
 
         String input = scanner.nextLine();
@@ -45,7 +47,7 @@ public class Hamlet {
                         break;
 
                     case MARK: {
-                        int indexToEdit = Integer.parseInt(input.replaceAll("[^\\d]", "")) - 1; //inputs is 0-indexed
+                        int indexToEdit = Parser.getIndexToEdit(input);
                         Task curTask = inputs.get(indexToEdit);
                         curTask.markAsDone();
                         ui.markTaskAsDone(curTask);
@@ -53,7 +55,7 @@ public class Hamlet {
                     }
 
                     case UNMARK: {
-                        int indexToEdit = Integer.parseInt(input.replaceAll("[^\\d]", "")) - 1; //inputs is 0-indexed
+                        int indexToEdit = Parser.getIndexToEdit(input);
                         Task curTask = inputs.get(indexToEdit);
                         curTask.markAsUndone();
                         ui.markTaskAsUndone(curTask);
@@ -63,47 +65,17 @@ public class Hamlet {
                     case TODO, DEADLINE, EVENT: {
                         switch (commandType) {
                             case TODO: {
-                                Pattern pattern = Pattern.compile("todo (.+)");
-                                Matcher matcher = pattern.matcher(input);
-                                if (matcher.matches()) {
-                                    String todoTask = matcher.group(1);
-                                    newTask = new Todo(todoTask);
-                                } else {
-                                    newTask = null;
-                                    throw new TodoException();
-                                }
+                                newTask = Parser.matchInputToDo(input);
                                 break;
                             }
 
                             case DEADLINE: {
-                                Pattern pattern = Pattern.compile("deadline (.*) /by (.*)");
-                                Matcher matcher = pattern.matcher(input);
-
-                                if (matcher.matches()) {
-                                    String deadlineTask = matcher.group(1);
-                                    String by = matcher.group(2);
-                                    LocalDate deadlineDate = LocalDate.parse(by, dateTimeFormatterYYYYMMDD);
-                                    newTask = new Deadline(deadlineTask, deadlineDate);
-                                } else {
-                                    throw new DeadlineException();
-                                }
+                                newTask = Parser.matchInputDeadline(input);
                                 break;
                             }
 
                             case EVENT: {
-                                Pattern pattern = Pattern.compile("event (.+) /from (.+) /to (.+)");
-                                Matcher matcher = pattern.matcher(input);
-                                if (matcher.matches()) {
-                                    String eventTask = matcher.group(1);
-                                    String from = matcher.group(2);
-                                    String to = matcher.group(3);
-                                    LocalDate fromDate = LocalDate.parse(from, dateTimeFormatterYYYYMMDD);
-                                    LocalDate toDate = LocalDate.parse(to, dateTimeFormatterYYYYMMDD);
-                                    newTask = new Event(eventTask, fromDate, toDate);
-                                } else {
-                                    newTask = null;
-                                    throw new EventException();
-                                }
+                                newTask = Parser.matchInputEvent(input);
                                 break;
                             }
                         }
@@ -115,7 +87,7 @@ public class Hamlet {
 
 
                     case DELETE: {
-                        int indexToEdit = Integer.parseInt(input.replaceAll("[^\\d]", "")) - 1; //inputs is 0-indexed
+                        int indexToEdit = Parser.getIndexToEdit(input);
                         Task curTask = inputs.get(indexToEdit);
                         inputs.remove(indexToEdit);
                         count--;
@@ -123,25 +95,10 @@ public class Hamlet {
                         break;
                     }
                     case HAPPENING: {
-                        Pattern pattern = Pattern.compile("happening /on (.+)");
-                        Matcher matcher = pattern.matcher(input);
-                        LocalDate dateToCheck;
-                        if (matcher.matches()) {
-                            dateToCheck = LocalDate.parse(matcher.group(1), dateTimeFormatterYYYYMMDD);
 
-                            String deadlinesOnDate = "";
-                            String eventsOnDate = "";
-                            for (int i = 0; i < count; i++) {
-                                Task curTask = inputs.get(i);
-                                if (curTask instanceof Deadline && ((Deadline) curTask).by.equals(dateToCheck)) {
-                                    deadlinesOnDate += curTask.toString();
-                                } else if (curTask instanceof Event && ((Event) curTask).from.equals(dateToCheck)) {
-                                    eventsOnDate += curTask.toString();
-                                }
-                            }
+                        String[] resultFromMatchHappenings = Parser.matchHappenings(input, inputs, count);
+                        ui.showHappenings(resultFromMatchHappenings[0], resultFromMatchHappenings[1]);
 
-                            ui.showHappenings(deadlinesOnDate, eventsOnDate);
-                        }
                         break;
                     }
                     case INVALID:
@@ -157,7 +114,7 @@ public class Hamlet {
             }
         }
 
-        String textToSave = convertArrToString();
+        String textToSave = Parser.convertArrToString(inputs);
 
         //writes and saves to file in csv format
         try {
@@ -175,23 +132,6 @@ public class Hamlet {
 
     public static void main(String[] args) {
         new Hamlet().run();
-    }
-
-
-    private static String convertArrToString() {
-        String finalString = "";
-        for (Task task : inputs) {
-            finalString = finalString + task.getShorthand() + "," + task.isDone() + "," + task.description;
-            if (task instanceof Deadline) {
-                finalString += "," + ((Deadline) task).by;
-            } else if (task instanceof Event) {
-                finalString += "," + ((Event) task).from + "," + ((Event) task).to;
-            }
-
-            finalString += "\n";
-        }
-
-        return finalString;
     }
 
 }
