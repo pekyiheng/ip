@@ -21,6 +21,10 @@ public class Hamlet {
     static DateTimeFormatter dateTimeFormatterYYYYMMDD = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private Storage storage;
 
+    public Hamlet() {
+        this.storage = new Storage(filePath);
+    }
+
     public void run() {
         Scanner scanner = new Scanner(System.in);
         String lineBreaks = "____________________________________________________________";
