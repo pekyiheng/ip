@@ -1,13 +1,19 @@
-package main.java;
+package main.java.task;
+
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class Deadline extends Task{
+public class Deadline extends Task {
     static DateTimeFormatter dateTimeFormatterMMMDDYYYY = DateTimeFormatter.ofPattern("MMM dd yyyy");
     protected java.time.LocalDate by;
 
     public Deadline(String description, java.time.LocalDate by) {
         super(description);
         this.by = by;
+    }
+
+    public LocalDate getBy() {
+        return this.by;
     }
 
     @Override

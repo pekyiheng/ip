@@ -1,5 +1,6 @@
-package main.java;
+package main.java.task;
 
+import main.java.*;
 import main.java.exception.HamletException;
 
 import java.io.File;

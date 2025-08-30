@@ -3,6 +3,10 @@ package main.java;
 import main.java.exception.DeadlineException;
 import main.java.exception.EventException;
 import main.java.exception.TodoException;
+import main.java.task.Deadline;
+import main.java.task.Event;
+import main.java.task.Task;
+import main.java.task.Todo;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -70,9 +74,9 @@ public class Parser {
             String eventsOnDate = "";
             for (int i = 0; i < count; i++) {
                 Task curTask = inputs.get(i);
-                if (curTask instanceof Deadline && ((Deadline) curTask).by.equals(dateToCheck)) {
+                if (curTask instanceof Deadline && ((Deadline) curTask).getBy().equals(dateToCheck)) {
                     deadlinesOnDate += curTask.toString();
-                } else if (curTask instanceof Event && ((Event) curTask).from.equals(dateToCheck)) {
+                } else if (curTask instanceof Event && ((Event) curTask).getFrom().equals(dateToCheck)) {
                     eventsOnDate += curTask.toString();
                 }
             }
@@ -87,11 +91,11 @@ public class Parser {
     public static String convertArrToString(ArrayList<Task> inputs) {
         String finalString = "";
         for (Task task : inputs) {
-            finalString = finalString + task.getShorthand() + "," + task.isDone() + "," + task.description;
+            finalString = finalString + task.getShorthand() + "," + task.isDone() + "," + task.getDescription();
             if (task instanceof Deadline) {
-                finalString += "," + ((Deadline) task).by;
+                finalString += "," + ((Deadline) task).getBy();
             } else if (task instanceof Event) {
-                finalString += "," + ((Event) task).from + "," + ((Event) task).to;
+                finalString += "," + ((Event) task).getFrom() + "," + ((Event) task).getTo();
             }
 
             finalString += "\n";

@@ -1,8 +1,9 @@
-package main.java;
+package main.java.task;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class Event extends Task{
+public class Event extends Task {
     static DateTimeFormatter dateTimeFormatterMMMDDYYYY = DateTimeFormatter.ofPattern("MMM dd yyyy");
 
     protected LocalDate to;
@@ -12,6 +13,14 @@ public class Event extends Task{
         super(description);
         this.to = to;
         this.from = from;
+    }
+
+    public LocalDate getTo() {
+        return this.to;
+    }
+
+    public LocalDate getFrom() {
+        return from;
     }
 
     @Override

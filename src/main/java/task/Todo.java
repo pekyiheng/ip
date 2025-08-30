@@ -1,6 +1,6 @@
-package main.java;
+package main.java.task;
 
-public class Todo extends Task{
+public class Todo extends Task {
     public Todo(String description) {
         super(description);
     }
