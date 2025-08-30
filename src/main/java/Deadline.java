@@ -5,7 +5,6 @@ public class Deadline extends Task{
     static DateTimeFormatter dateTimeFormatterMMMDDYYYY = DateTimeFormatter.ofPattern("MMM dd yyyy");
     protected java.time.LocalDate by;
 
-
     public Deadline(String description, java.time.LocalDate by) {
         super(description);
         this.by = by;
