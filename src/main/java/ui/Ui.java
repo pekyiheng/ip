@@ -1,6 +1,6 @@
 package main.java.ui;
 
-import main.java.Result;
+import main.java.enums.Result;
 import main.java.task.Task;
 
 import java.util.ArrayList;

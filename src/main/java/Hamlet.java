@@ -1,5 +1,7 @@
 package main.java;
 
+import main.java.enums.Command;
+import main.java.enums.Result;
 import main.java.exception.HamletException;
 import main.java.parser.Parser;
 import main.java.storage.Storage;
