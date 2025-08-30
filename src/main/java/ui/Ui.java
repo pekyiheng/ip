@@ -1,5 +1,6 @@
-package main.java;
+package main.java.ui;
 
+import main.java.Result;
 import main.java.task.Task;
 
 import java.util.ArrayList;

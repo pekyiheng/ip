@@ -3,6 +3,7 @@ package main.java;
 import main.java.exception.HamletException;
 import main.java.storage.Storage;
 import main.java.task.TaskList;
+import main.java.ui.Ui;
 
 import java.util.Scanner;
 import java.io.IOException;
