@@ -71,6 +71,10 @@ public class Hamlet {
 
                         break;
                     }
+                    case FIND:
+                        String resultFromMatchFind = Parser.matchFind(input, taskList.getInputs(), taskList.getCount());
+                        Ui.showFinds(resultFromMatchFind);
+                        break;
                     case INVALID:
                         throw new HamletException();
                 }

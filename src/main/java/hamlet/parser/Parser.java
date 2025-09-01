@@ -88,6 +88,25 @@ public class Parser {
         return returnArray;
     }
 
+    public static String matchFind(String input, ArrayList<Task> inputs, int count) {
+        Pattern pattern = Pattern.compile("find (\\w+)");
+        Matcher matcher = pattern.matcher(input);
+
+        int findCount = 1;
+        String returnString = "";
+        if (matcher.matches()) {
+            String keyword = matcher.group(1);
+            for (int i = 0; i < count; i++) {
+                Task curTask = inputs.get(i);
+                if (curTask.getDescription().contains(keyword)) {
+                    returnString += findCount + ". " + curTask.toString();
+                    findCount++;
+                }
+            }
+        }
+        return returnString;
+    }
+
     public static String convertArrToString(ArrayList<Task> inputs) {
         String finalString = "";
         for (Task task : inputs) {

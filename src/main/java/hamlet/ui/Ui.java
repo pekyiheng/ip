@@ -60,6 +60,13 @@ public class Ui {
         System.out.println("Deadline:\n" + deadlinesOnDate + "\nEvents:\n" + eventsOnDate);
     }
 
+    public static void showFinds(String resultFromMatchFind) {
+        printLineBreak();
+        System.out.println("Here are the matching tasks in your list:");
+        System.out.println(resultFromMatchFind);
+        printLineBreak();
+    }
+
     public static void showErrorMessage(String message) {
         System.out.println(message);
     }

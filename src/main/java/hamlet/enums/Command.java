@@ -11,7 +11,8 @@ public enum Command {
     DEADLINE,
     EVENT,
     INVALID,
-    HAPPENING;
+    HAPPENING,
+    FIND;
 
     public static Command checkCommand(String input) {
         String trimmedInput = input.trim();
@@ -44,6 +45,9 @@ public enum Command {
         }
         if (trimmedInput.startsWith("happening")) {
             return HAPPENING;
+        }
+        if (trimmedInput.startsWith("find")) {
+            return FIND;
         }
         return INVALID;
     }
