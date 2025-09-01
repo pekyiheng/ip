@@ -94,4 +94,18 @@ public class ParserTest {
         String actual = Parser.convertArrToString(taskList);
         assertEquals(expected, actual);
     }
+
+    @Test
+    void matchFind_validInput_returnsCorrectString() {
+        String expected = "1. [T][ ] read book" + System.lineSeparator() + "2. [D][ ] return book (by: Oct 26 2025)" + System.lineSeparator();
+        String actual = Parser.matchFind("find book", taskList, 3);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void matchFind_noMatch_returnsEmptyString() {
+        String expected = "";
+        String actual = Parser.matchFind("find non existent", taskList, 3);
+        assertEquals(expected, actual);
+    }
 }
