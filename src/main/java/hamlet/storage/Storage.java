@@ -5,13 +5,33 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Handles the loading and writing of data into a text file
+ * <p>
+ *This class provides methods to ensure a file exists, load its content, and write new content to it.
+ * It uses a specified file path for all its operations.
+ * </p>
+ */
 public class Storage {
     static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private String filePath;
-
+/**
+    /**
+     * Constructs a Storage object with the specified file path
+     *
+     * @param filePath
+     */
     public Storage(String filePath) {
         this.filePath = filePath;
     }
+
+    /**
+     * Loads the text file as specified in the constructor
+     * <p>
+     *     If file does not exist, creates a new file
+     * </p>
+     * @ File object
+     */
 
     public File load() {
         //handle file does not exist
@@ -28,6 +48,13 @@ public class Storage {
         return file;
     }
 
+    /**
+     * Writes specified text to the file, overwriting any existing text
+     *
+     * @param textToAdd The string content in csv format to be written to the file
+     * @throws IOException if an error occurs while writing to file
+
+     */
     public void writeToFile(String textToAdd) throws IOException {
         FileWriter fw = new FileWriter(filePath);
         fw.write(textToAdd);
