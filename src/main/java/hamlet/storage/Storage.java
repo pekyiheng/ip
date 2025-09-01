@@ -1,4 +1,4 @@
-package main.java.storage;
+package hamlet.storage;
 
 import java.io.File;
 import java.io.FileWriter;

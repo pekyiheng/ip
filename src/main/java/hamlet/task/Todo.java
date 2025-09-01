@@ -1,4 +1,4 @@
-package main.java.task;
+package hamlet.task;
 
 public class Todo extends Task {
     public Todo(String description) {

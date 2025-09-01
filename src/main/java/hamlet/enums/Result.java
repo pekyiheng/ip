@@ -1,4 +1,4 @@
-package main.java.enums;
+package hamlet.enums;
 
 public enum Result {
     SUCCESS,

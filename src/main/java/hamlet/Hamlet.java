@@ -1,12 +1,12 @@
-package main.java;
+package hamlet;
 
-import main.java.enums.Command;
-import main.java.enums.Result;
-import main.java.exception.HamletException;
-import main.java.parser.Parser;
-import main.java.storage.Storage;
-import main.java.task.TaskList;
-import main.java.ui.Ui;
+import hamlet.enums.Command;
+import hamlet.enums.Result;
+import hamlet.exception.HamletException;
+import hamlet.parser.Parser;
+import hamlet.storage.Storage;
+import hamlet.task.TaskList;
+import hamlet.ui.Ui;
 
 import java.util.Scanner;
 import java.io.IOException;

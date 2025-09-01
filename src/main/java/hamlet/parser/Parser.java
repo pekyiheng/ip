@@ -1,12 +1,12 @@
-package main.java.parser;
+package hamlet.parser;
 
-import main.java.exception.DeadlineException;
-import main.java.exception.EventException;
-import main.java.exception.TodoException;
-import main.java.task.Deadline;
-import main.java.task.Event;
-import main.java.task.Task;
-import main.java.task.Todo;
+import hamlet.exception.DeadlineException;
+import hamlet.exception.EventException;
+import hamlet.exception.TodoException;
+import hamlet.task.Deadline;
+import hamlet.task.Event;
+import hamlet.task.Task;
+import hamlet.task.Todo;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;

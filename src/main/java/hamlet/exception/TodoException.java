@@ -1,4 +1,4 @@
-package main.java.exception;
+package hamlet.exception;
 
 public class TodoException extends HamletException {
 

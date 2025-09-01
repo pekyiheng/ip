@@ -1,9 +1,9 @@
-package main.java.task;
+package hamlet.task;
 
-import main.java.enums.Command;
-import main.java.exception.HamletException;
-import main.java.parser.Parser;
-import main.java.ui.Ui;
+import hamlet.enums.Command;
+import hamlet.exception.HamletException;
+import hamlet.parser.Parser;
+import hamlet.ui.Ui;
 
 import java.io.File;
 import java.io.FileNotFoundException;

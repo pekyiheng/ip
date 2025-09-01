@@ -1,4 +1,4 @@
-package main.java.task;
+package hamlet.task;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;

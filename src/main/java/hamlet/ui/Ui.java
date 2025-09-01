@@ -1,7 +1,7 @@
-package main.java.ui;
+package hamlet.ui;
 
-import main.java.enums.Result;
-import main.java.task.Task;
+import hamlet.enums.Result;
+import hamlet.task.Task;
 
 import java.util.ArrayList;
 
