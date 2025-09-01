@@ -3,7 +3,6 @@ package hamlet.storage;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.time.format.DateTimeFormatter;
 
 /**
  * Handles the loading and writing of data into a text file
@@ -13,7 +12,6 @@ import java.time.format.DateTimeFormatter;
  * </p>
  */
 public class Storage {
-    static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private String filePath;
 /**
     /**
