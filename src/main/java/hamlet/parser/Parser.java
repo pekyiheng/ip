@@ -18,7 +18,7 @@ public class Parser {
     static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     public static int getIndexToEdit(String input) {
-        return Integer.parseInt(input.replaceAll("[^\\d]", "")) - 1; //inputs is 0-indexed
+        return Integer.parseInt(input.replaceAll("\\D", "")) - 1; //inputs is 0-indexed
     }
 
     public static Task matchInputToDo(String input) throws TodoException {
@@ -69,38 +69,33 @@ public class Parser {
         String[] returnArray = {"", ""};
         if (matcher.matches()) {
             dateToCheck = LocalDate.parse(matcher.group(1), DATE_TIME_FORMATTER);
-
-            String deadlinesOnDate = "";
-            String eventsOnDate = "";
+            StringBuilder deadlinesOnDateSb = new StringBuilder();
+            StringBuilder eventsOnDateSb = new StringBuilder();
             for (int i = 0; i < count; i++) {
                 Task curTask = inputs.get(i);
                 if (curTask instanceof Deadline && ((Deadline) curTask).getBy().equals(dateToCheck)) {
-                    deadlinesOnDate += curTask.toString();
+                    deadlinesOnDateSb.append(curTask.toString());
                 } else if (curTask instanceof Event && ((Event) curTask).getFrom().equals(dateToCheck)) {
-                    eventsOnDate += curTask.toString();
+                    eventsOnDateSb.append(curTask.toString());
                 }
             }
-
-            returnArray[0] = deadlinesOnDate;
-            returnArray[1] = eventsOnDate;
-
+            returnArray[0] = deadlinesOnDateSb.toString();
+            returnArray[1] = eventsOnDateSb.toString();
         }
         return returnArray;
     }
 
     public static String convertArrToString(ArrayList<Task> inputs) {
-        String finalString = "";
+        StringBuilder sb = new StringBuilder();
         for (Task task : inputs) {
-            finalString = finalString + task.getShorthand() + "," + task.isDone() + "," + task.getDescription();
+            sb.append(task.getShorthand()).append(",").append(task.isDone()).append(",").append(task.getDescription());
             if (task instanceof Deadline) {
-                finalString += "," + ((Deadline) task).getBy();
+                sb.append(",").append(((Deadline) task).getBy());
             } else if (task instanceof Event) {
-                finalString += "," + ((Event) task).getFrom() + "," + ((Event) task).getTo();
+                sb.append(",").append(((Event) task).getFrom()).append(",").append(((Event) task).getTo());
             }
-
-            finalString += "\n";
+            sb.append("\n");
         }
-
-        return finalString;
+        return sb.toString();
     }
 }
