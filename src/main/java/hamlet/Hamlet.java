@@ -19,11 +19,29 @@ public class Hamlet {
     private Storage storage;
     private TaskList taskList;
 
+    /**
+     * Constructs a new Hamlet instance.
+     * <p>
+     *     Constructor initializes a Storage and TaskList component, which loads tasks saved in text form from
+     *     specified file to be stored as a TaskList
+     * </p>
+     */
     public Hamlet() {
         this.storage = new Storage(filePath);
         this.taskList = new TaskList(storage.load());
     }
 
+    /**
+     * The main execution loop of application
+     * <p>
+     *     This method displays the welcome message, then enters a loop that continuously reads the user input, process
+     *     commands, and executes the corresponding tasks.
+     *     The loop terminates when user enters "bye" command.
+     * </p>
+     * @throws IOException If an I/O error occurs while writing to file
+     * @throws DateTimeParseException If date string provided by user cannot be parsed properly
+     * @throws HamletException If an invalid command or format is provided.
+     */
     public void run() {
         Scanner scanner = new Scanner(System.in);
         Ui.welcomeMessage();
@@ -101,7 +119,11 @@ public class Hamlet {
         Ui.goodbyeMessage();
     }
 
-
+    /**
+     * THe main entry point of application
+     *
+     * @param args Command-line arguments
+     */
     public static void main(String[] args) {
         new Hamlet().run();
     }

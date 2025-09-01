@@ -89,6 +89,28 @@ public class Parser {
     }
 
     /**
+     * Converts an ArrayList of tasks into a single string separated by commas and newlines.
+     *
+     * @param inputs The ArrayList of tasks to convert
+     * @return A string representation of all tasks to be stored in text file
+     */
+    public static String convertArrToString(ArrayList<Task> inputs) {
+        String finalString = "";
+        for (Task task : inputs) {
+            finalString = finalString + task.getShorthand() + "," + task.isDone() + "," + task.getDescription();
+            if (task instanceof Deadline) {
+                finalString += "," + ((Deadline) task).getBy();
+            } else if (task instanceof Event) {
+                finalString += "," + ((Event) task).getFrom() + "," + ((Event) task).getTo();
+            }
+
+            finalString += "\n";
+        }
+
+        return finalString;
+    }
+
+    /**
      * Find tasks containing a specific keyword in its description
      *
      * @param input The user's input string
@@ -113,21 +135,5 @@ public class Parser {
             }
         }
         return returnString;
-    }
-
-    public static String convertArrToString(ArrayList<Task> inputs) {
-        String finalString = "";
-        for (Task task : inputs) {
-            finalString = finalString + task.getShorthand() + "," + task.isDone() + "," + task.getDescription();
-            if (task instanceof Deadline) {
-                finalString += "," + ((Deadline) task).getBy();
-            } else if (task instanceof Event) {
-                finalString += "," + ((Event) task).getFrom() + "," + ((Event) task).getTo();
-            }
-
-            finalString += "\n";
-        }
-
-        return finalString;
     }
 }

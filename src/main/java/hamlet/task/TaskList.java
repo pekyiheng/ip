@@ -12,12 +12,26 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * Manages a list of tasks, including adding, deleting, and marking tasks as done.
+ * <p>
+ *     This class encapsulates the logic for managing tasks within the Hamlet application.
+ * </p>
+ */
 public class TaskList {
     static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private ArrayList<Task> inputs = new ArrayList<>(100);
     private int count = 0;
     private File file;
 
+    /**
+     * Constructs a TaskList object, loading tasks from a specified file.
+     * <p>
+     *     If file exists, reads the contents and populates the private task list.
+     *     If file does not exist, prints an error message
+     * </p>
+     * @param file The file object which contains the task data.
+     */
     public TaskList(File file) {
         this.file = file;
         try {
@@ -27,26 +41,51 @@ public class TaskList {
         }
     }
 
+    /**
+     * Returns current number of tasks in the list
+     *
+     * @return The number of tasl in list
+     */
     public int getCount() {
         return this.count;
     }
 
+    /**
+     * Returns the ArrayList containing all the tasks.
+     *
+     * @return List of tasks
+     */
     public ArrayList<Task> getInputs() {
         return inputs;
     }
 
+    /**
+     * Marks a task as done and prints a mark as done statement
+     *
+     * @param indexToEdit A 0-indexed position of the task to mark as done
+     */
     public void markTaskAsDone(int indexToEdit) {
         Task curTask = this.inputs.get(indexToEdit);
         curTask.markAsDone();
         Ui.markTaskAsDone(curTask);
     }
 
+    /**
+     * Marks a task as undone and prints a mark as undone statement
+     *
+     * @param indexToEdit A 0-indexed position of the task to mark as undone
+     */
     public void markTaskAsUndone(int indexToEdit) {
         Task curTask = this.inputs.get(indexToEdit);
         curTask.markAsUndone();
         Ui.markTaskAsUndone(curTask);
     }
 
+    /**
+     * Deletes a task based on its 0-indexed position in ArrayList
+     *
+     * @param indexToEdit A 0-indexed position of the task to delete
+     */
     public void deleteTask(int indexToEdit) {
         Task curTask = this.inputs.get(indexToEdit);
         this.inputs.remove(indexToEdit);
@@ -54,6 +93,13 @@ public class TaskList {
         Ui.removeTask(curTask, this.count);
     }
 
+    /**
+     * Adds a new task to the list based on the command type and user input
+     *
+     * @param commandType The type of task to add to list
+     * @param input The user input string for the task
+     * @throws HamletException If the input for the task is invalid
+     */
     public void addTask(Command commandType, String input) throws HamletException {
         Task newTask = null;
         switch (commandType) {
@@ -78,6 +124,11 @@ public class TaskList {
         Ui.addNewTask(newTask, this.count);
     }
 
+    /**
+     * Reads the contents of the file and populates the task list
+     *
+     * @throws FileNotFoundException If specified file does not exist
+     */
     private void readFileContents() throws FileNotFoundException {
         Scanner s = new Scanner(file); // create a Scanner using the File as the source
         while (s.hasNext()) {
