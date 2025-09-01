@@ -88,6 +88,14 @@ public class Parser {
         return returnArray;
     }
 
+    /**
+     * Find tasks containing a specific keyword in its description
+     *
+     * @param input The user's input string
+     * @param inputs The list of all tasks
+     * @param count The current number of tasks in list
+     * @return A formatted string contaiing all the tasks that contains keyword
+     */
     public static String matchFind(String input, ArrayList<Task> inputs, int count) {
         Pattern pattern = Pattern.compile("find (\\w+)");
         Matcher matcher = pattern.matcher(input);
