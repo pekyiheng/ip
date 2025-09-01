@@ -111,24 +111,24 @@ public class Parser {
      * @param input The user's input string
      * @param inputs The list of all tasks
      * @param count The current number of tasks in list
-     * @return A formatted string contaiing all the tasks that contains keyword
+     * @return A formatted string containing all the tasks that contains keyword
      */
     public static String matchFind(String input, ArrayList<Task> inputs, int count) {
         Pattern pattern = Pattern.compile("find (\\w+)");
         Matcher matcher = pattern.matcher(input);
 
         int findCount = 1;
-        String returnString = "";
+        StringBuilder returnStringSb = new StringBuilder();
         if (matcher.matches()) {
             String keyword = matcher.group(1);
             for (int i = 0; i < count; i++) {
                 Task curTask = inputs.get(i);
                 if (curTask.getDescription().contains(keyword)) {
-                    returnString += findCount + ". " + curTask.toString();
+                    returnStringSb.append(findCount).append(". ").append(curTask.toString());
                     findCount++;
                 }
             }
         }
-        return returnString;
+        return returnStringSb.toString();
     }
 }
