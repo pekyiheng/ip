@@ -46,51 +46,51 @@ public class Hamlet {
         Scanner scanner = new Scanner(System.in);
         Ui.welcomeMessage();
 
-        String input = scanner.nextLine();
+        String userInput = scanner.nextLine();
 
-        while (!input.equals("bye")) {
+        while (!userInput.equals("bye")) {
             try {
                 Ui.printLineBreak();
-                Command commandType = Command.checkCommand(input);
+                Command commandType = Command.checkCommand(userInput);
                 switch (commandType) {
                     case NAME:
                         Ui.showName();
                         break;
 
                     case LIST:
-                        Ui.showTasks(taskList.getInputs(), taskList.getCount());
+                        Ui.showTasks(taskList.gettaskList(), taskList.getCount());
                         break;
 
                     case MARK: {
-                        int indexToEdit = Parser.getIndexToEdit(input);
+                        int indexToEdit = Parser.getIndexToEdit(userInput);
                         taskList.markTaskAsDone(indexToEdit);
                         break;
                     }
 
                     case UNMARK: {
-                        int indexToEdit = Parser.getIndexToEdit(input);
+                        int indexToEdit = Parser.getIndexToEdit(userInput);
                         taskList.markTaskAsUndone(indexToEdit);
                         break;
                     }
 
                     case TODO, DEADLINE, EVENT: {
-                        taskList.addTask(commandType, input);
+                        taskList.addTask(commandType, userInput);
                         break;
                     }
 
                     case DELETE: {
-                        int indexToEdit = Parser.getIndexToEdit(input);
+                        int indexToEdit = Parser.getIndexToEdit(userInput);
                         taskList.deleteTask(indexToEdit);
                         break;
                     }
                     case HAPPENING: {
-                        String[] resultFromMatchHappenings = Parser.matchHappenings(input, taskList.getInputs(), taskList.getCount());
+                        String[] resultFromMatchHappenings = Parser.matchHappenings(userInput, taskList.gettaskList(), taskList.getCount());
                         Ui.showHappenings(resultFromMatchHappenings[0], resultFromMatchHappenings[1]);
 
                         break;
                     }
                     case FIND:
-                        String resultFromMatchFind = Parser.matchFind(input, taskList.getInputs(), taskList.getCount());
+                        String resultFromMatchFind = Parser.matchFind(userInput, taskList.gettaskList(), taskList.getCount());
                         Ui.showFinds(resultFromMatchFind);
                         break;
                     case INVALID:
@@ -102,11 +102,11 @@ public class Hamlet {
                 Ui.showDateTimeParseExceptionMessage();
             } finally {
                 Ui.printLineBreak();
-                input = scanner.nextLine();
+                userInput = scanner.nextLine();
             }
         }
 
-        String textToSave = Parser.convertArrToString(taskList.getInputs());
+        String textToSave = Parser.convertArrToString(taskList.gettaskList());
 
         //writes and saves to file in csv format
         try {

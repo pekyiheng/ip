@@ -20,9 +20,9 @@ import java.util.Scanner;
  */
 public class TaskList {
     static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-    private ArrayList<Task> inputs = new ArrayList<>(100);
-    private int count = 0;
-    private File file;
+    private ArrayList<Task> taskList = new ArrayList<>(100);
+    private int taskCount = 0;
+    private File taskFile;
 
     /**
      * Constructs a TaskList object, loading tasks from a specified file.
@@ -30,10 +30,10 @@ public class TaskList {
      *     If file exists, reads the contents and populates the private task list.
      *     If file does not exist, prints an error message
      * </p>
-     * @param file The file object which contains the task data.
+     * @param taskFile The file object which contains the task data.
      */
-    public TaskList(File file) {
-        this.file = file;
+    public TaskList(File taskFile) {
+        this.taskFile = taskFile;
         try {
             readFileContents();
         } catch (FileNotFoundException err) {
@@ -47,7 +47,7 @@ public class TaskList {
      * @return The number of tasl in list
      */
     public int getCount() {
-        return this.count;
+        return this.taskCount;
     }
 
     /**
@@ -55,8 +55,8 @@ public class TaskList {
      *
      * @return List of tasks
      */
-    public ArrayList<Task> getInputs() {
-        return inputs;
+    public ArrayList<Task> gettaskList() {
+        return taskList;
     }
 
     /**
@@ -65,7 +65,7 @@ public class TaskList {
      * @param indexToEdit A 0-indexed position of the task to mark as done
      */
     public void markTaskAsDone(int indexToEdit) {
-        Task curTask = this.inputs.get(indexToEdit);
+        Task curTask = this.taskList.get(indexToEdit);
         curTask.markAsDone();
         Ui.markTaskAsDone(curTask);
     }
@@ -76,7 +76,7 @@ public class TaskList {
      * @param indexToEdit A 0-indexed position of the task to mark as undone
      */
     public void markTaskAsUndone(int indexToEdit) {
-        Task curTask = this.inputs.get(indexToEdit);
+        Task curTask = this.taskList.get(indexToEdit);
         curTask.markAsUndone();
         Ui.markTaskAsUndone(curTask);
     }
@@ -87,41 +87,41 @@ public class TaskList {
      * @param indexToEdit A 0-indexed position of the task to delete
      */
     public void deleteTask(int indexToEdit) {
-        Task curTask = this.inputs.get(indexToEdit);
-        this.inputs.remove(indexToEdit);
-        this.count--;
-        Ui.removeTask(curTask, this.count);
+        Task curTask = this.taskList.get(indexToEdit);
+        this.taskList.remove(indexToEdit);
+        this.taskCount--;
+        Ui.removeTask(curTask, this.taskCount);
     }
 
     /**
      * Adds a new task to the list based on the command type and user input
      *
      * @param commandType The type of task to add to list
-     * @param input The user input string for the task
+     * @param taskInput The user input string for the task
      * @throws HamletException If the input for the task is invalid
      */
-    public void addTask(Command commandType, String input) throws HamletException {
+    public void addTask(Command commandType, String taskInput) throws HamletException {
         Task newTask = null;
         switch (commandType) {
             case TODO: {
-                newTask = Parser.matchInputToDo(input);
+                newTask = Parser.matchInputToDo(taskInput);
                 break;
             }
 
             case DEADLINE: {
-                newTask = Parser.matchInputDeadline(input);
+                newTask = Parser.matchInputDeadline(taskInput);
                 break;
             }
 
             case EVENT: {
-                newTask = Parser.matchInputEvent(input);
+                newTask = Parser.matchInputEvent(taskInput);
                 break;
             }
         }
 
-        this.inputs.add(newTask);
-        this.count++;
-        Ui.addNewTask(newTask, this.count);
+        this.taskList.add(newTask);
+        this.taskCount++;
+        Ui.addNewTask(newTask, this.taskCount);
     }
 
     /**
@@ -130,18 +130,18 @@ public class TaskList {
      * @throws FileNotFoundException If specified file does not exist
      */
     private void readFileContents() throws FileNotFoundException {
-        Scanner s = new Scanner(file); // create a Scanner using the File as the source
+        Scanner s = new Scanner(taskFile); // create a Scanner using the File as the source
         while (s.hasNext()) {
-            String curRow = s.nextLine();
-            String[] values = curRow.split(",");
-            this.count++;
+            String currentRow = s.nextLine();
+            String[] values = currentRow.split(",");
+            this.taskCount++;
             switch (values[0]) {
                 case "T":
                     Todo newTodo = new Todo(values[2]);
                     if (values[1].equals("1")) {
                         newTodo.markAsDone();
                     }
-                    this.inputs.add(newTodo);
+                    this.taskList.add(newTodo);
                     break;
                 case "D":
                     LocalDate deadlineDate = LocalDate.parse(values[3], DATE_TIME_FORMATTER);
@@ -149,7 +149,7 @@ public class TaskList {
                     if (values[1].equals("1")) {
                         newDeadline.markAsDone();
                     }
-                    this.inputs.add(newDeadline);
+                    this.taskList.add(newDeadline);
                     break;
                 case "E":
                     LocalDate fromDate = LocalDate.parse(values[3], DATE_TIME_FORMATTER);
@@ -158,7 +158,7 @@ public class TaskList {
                     if (values[1].equals("1")) {
                         newEvent.markAsDone();
                     }
-                    this.inputs.add(newEvent);
+                    this.taskList.add(newEvent);
                     break;
             }
         }
