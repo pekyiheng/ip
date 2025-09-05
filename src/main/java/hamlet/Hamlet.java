@@ -32,6 +32,13 @@ public class Hamlet {
     }
 
     /**
+     * Generates a response for the user's chat message.
+     */
+    public String getResponse(String input) {
+        return "Hamlet heard: " + input;
+    }
+
+    /**
      * The main execution loop of application
      * <p>
      *     This method displays the welcome message, then enters a loop that continuously reads the user input, process
