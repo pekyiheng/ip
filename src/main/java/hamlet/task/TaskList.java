@@ -103,20 +103,20 @@ public class TaskList {
     public void addTask(Command commandType, String taskInput) throws HamletException {
         Task newTask = null;
         switch (commandType) {
-            case TODO: {
-                newTask = Parser.matchInputToDo(taskInput);
-                break;
-            }
+        case TODO: {
+            newTask = Parser.matchInputToDo(taskInput);
+            break;
+        }
 
-            case DEADLINE: {
-                newTask = Parser.matchInputDeadline(taskInput);
-                break;
-            }
+        case DEADLINE: {
+            newTask = Parser.matchInputDeadline(taskInput);
+            break;
+        }
 
-            case EVENT: {
-                newTask = Parser.matchInputEvent(taskInput);
-                break;
-            }
+        case EVENT: {
+            newTask = Parser.matchInputEvent(taskInput);
+            break;
+        }
         }
 
         this.taskList.add(newTask);
@@ -136,30 +136,30 @@ public class TaskList {
             String[] values = currentRow.split(",");
             this.taskCount++;
             switch (values[0]) {
-                case "T":
-                    Todo newTodo = new Todo(values[2]);
-                    if (values[1].equals("1")) {
-                        newTodo.markAsDone();
-                    }
-                    this.taskList.add(newTodo);
-                    break;
-                case "D":
-                    LocalDate deadlineDate = LocalDate.parse(values[3], DATE_TIME_FORMATTER);
-                    Deadline newDeadline = new Deadline(values[2], deadlineDate);
-                    if (values[1].equals("1")) {
-                        newDeadline.markAsDone();
-                    }
-                    this.taskList.add(newDeadline);
-                    break;
-                case "E":
-                    LocalDate fromDate = LocalDate.parse(values[3], DATE_TIME_FORMATTER);
-                    LocalDate toDate = LocalDate.parse(values[4], DATE_TIME_FORMATTER);
-                    Event newEvent = new Event(values[2], fromDate, toDate);
-                    if (values[1].equals("1")) {
-                        newEvent.markAsDone();
-                    }
-                    this.taskList.add(newEvent);
-                    break;
+            case "T":
+                Todo newTodo = new Todo(values[2]);
+                if (values[1].equals("1")) {
+                    newTodo.markAsDone();
+                }
+                this.taskList.add(newTodo);
+                break;
+            case "D":
+                LocalDate deadlineDate = LocalDate.parse(values[3], DATE_TIME_FORMATTER);
+                Deadline newDeadline = new Deadline(values[2], deadlineDate);
+                if (values[1].equals("1")) {
+                    newDeadline.markAsDone();
+                }
+                this.taskList.add(newDeadline);
+                break;
+            case "E":
+                LocalDate fromDate = LocalDate.parse(values[3], DATE_TIME_FORMATTER);
+                LocalDate toDate = LocalDate.parse(values[4], DATE_TIME_FORMATTER);
+                Event newEvent = new Event(values[2], fromDate, toDate);
+                if (values[1].equals("1")) {
+                    newEvent.markAsDone();
+                }
+                this.taskList.add(newEvent);
+                break;
             }
         }
     }

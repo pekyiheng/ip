@@ -30,7 +30,7 @@ public class Ui {
     public static void showTasks(ArrayList<Task> inputs, int count) {
         for (int i = 0; i < count; i++) {
             Task curTask = inputs.get(i);
-            System.out.printf("\t%d.%s", i+1, curTask);
+            System.out.printf("\t%d.%s", i + 1, curTask);
         }
     }
 

@@ -53,48 +53,48 @@ public class Hamlet {
                 Ui.printLineBreak();
                 Command commandType = Command.checkCommand(userInput);
                 switch (commandType) {
-                    case NAME:
-                        Ui.showName();
-                        break;
+                case NAME:
+                    Ui.showName();
+                    break;
 
-                    case LIST:
-                        Ui.showTasks(taskList.gettaskList(), taskList.getCount());
-                        break;
+                case LIST:
+                    Ui.showTasks(taskList.gettaskList(), taskList.getCount());
+                    break;
 
-                    case MARK: {
-                        int indexToEdit = Parser.getIndexToEdit(userInput);
-                        taskList.markTaskAsDone(indexToEdit);
-                        break;
-                    }
+                case MARK: {
+                    int indexToEdit = Parser.getIndexToEdit(userInput);
+                    taskList.markTaskAsDone(indexToEdit);
+                    break;
+                }
 
-                    case UNMARK: {
-                        int indexToEdit = Parser.getIndexToEdit(userInput);
-                        taskList.markTaskAsUndone(indexToEdit);
-                        break;
-                    }
+                case UNMARK: {
+                    int indexToEdit = Parser.getIndexToEdit(userInput);
+                    taskList.markTaskAsUndone(indexToEdit);
+                    break;
+                }
 
-                    case TODO, DEADLINE, EVENT: {
-                        taskList.addTask(commandType, userInput);
-                        break;
-                    }
+                case TODO, DEADLINE, EVENT: {
+                    taskList.addTask(commandType, userInput);
+                    break;
+                }
 
-                    case DELETE: {
-                        int indexToEdit = Parser.getIndexToEdit(userInput);
-                        taskList.deleteTask(indexToEdit);
-                        break;
-                    }
-                    case HAPPENING: {
-                        String[] resultFromMatchHappenings = Parser.matchHappenings(userInput, taskList.gettaskList(), taskList.getCount());
-                        Ui.showHappenings(resultFromMatchHappenings[0], resultFromMatchHappenings[1]);
+                case DELETE: {
+                    int indexToEdit = Parser.getIndexToEdit(userInput);
+                    taskList.deleteTask(indexToEdit);
+                    break;
+                }
+                case HAPPENING: {
+                    String[] resultFromMatchHappenings = Parser.matchHappenings(userInput, taskList.gettaskList(), taskList.getCount());
+                    Ui.showHappenings(resultFromMatchHappenings[0], resultFromMatchHappenings[1]);
 
-                        break;
-                    }
-                    case FIND:
-                        String resultFromMatchFind = Parser.matchFind(userInput, taskList.gettaskList(), taskList.getCount());
-                        Ui.showFinds(resultFromMatchFind);
-                        break;
-                    case INVALID:
-                        throw new HamletException();
+                    break;
+                }
+                case FIND:
+                    String resultFromMatchFind = Parser.matchFind(userInput, taskList.gettaskList(), taskList.getCount());
+                    Ui.showFinds(resultFromMatchFind);
+                    break;
+                case INVALID:
+                    throw new HamletException();
                 }
             } catch (HamletException err) {
                 Ui.showErrorMessage(err.toString());
