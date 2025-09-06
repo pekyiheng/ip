@@ -18,6 +18,7 @@ public class Hamlet {
 
     private Storage storage;
     private TaskList taskList;
+    private Command commandType;
 
     /**
      * Constructs a new Hamlet instance.
@@ -34,8 +35,55 @@ public class Hamlet {
     /**
      * Generates a response for the user's chat message.
      */
-    public String getResponse(String input) {
-        return "Hamlet heard: " + input;
+    public String getResponse(String userInput) {
+        try {
+            commandType = Command.checkCommand(userInput);
+            switch (commandType) {
+            case NAME:
+                return Ui.showName();
+
+            case LIST:
+                return Ui.showTasks(taskList.gettaskList(), taskList.getCount());
+
+            case MARK: {
+                int indexToEdit = Parser.getIndexToEdit(userInput);
+                return taskList.markTaskAsDone(indexToEdit);
+            }
+
+            case UNMARK: {
+                int indexToEdit = Parser.getIndexToEdit(userInput);
+                return taskList.markTaskAsUndone(indexToEdit);
+            }
+
+            case TODO, DEADLINE, EVENT: {
+                return taskList.addTask(commandType, userInput);
+            }
+
+            case DELETE: {
+                int indexToEdit = Parser.getIndexToEdit(userInput);
+                return taskList.deleteTask(indexToEdit);
+            }
+            case HAPPENING: {
+                String[] resultFromMatchHappenings = Parser.matchHappenings(userInput, taskList.gettaskList(), taskList.getCount());
+                return Ui.showHappenings(resultFromMatchHappenings[0], resultFromMatchHappenings[1]);
+            }
+            case FIND:
+                String resultFromMatchFind = Parser.matchFind(userInput, taskList.gettaskList(), taskList.getCount());
+                return Ui.showFinds(resultFromMatchFind);
+            case INVALID:
+                throw new HamletException();
+            }
+        } catch (HamletException err) {
+            return Ui.showErrorMessage(err.toString());
+        } catch (DateTimeParseException dateTimeParseException) {
+            return Ui.showDateTimeParseExceptionMessage();
+        }
+        return Ui.printLineBreak();
+
+    }
+
+    public Command getCommandType() {
+        return commandType;
     }
 
     /**

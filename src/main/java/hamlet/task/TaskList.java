@@ -64,10 +64,10 @@ public class TaskList {
      *
      * @param indexToEdit A 0-indexed position of the task to mark as done
      */
-    public void markTaskAsDone(int indexToEdit) {
+    public String markTaskAsDone(int indexToEdit) {
         Task curTask = this.taskList.get(indexToEdit);
         curTask.markAsDone();
-        Ui.markTaskAsDone(curTask);
+        return Ui.markTaskAsDone(curTask);
     }
 
     /**
@@ -75,10 +75,10 @@ public class TaskList {
      *
      * @param indexToEdit A 0-indexed position of the task to mark as undone
      */
-    public void markTaskAsUndone(int indexToEdit) {
+    public String markTaskAsUndone(int indexToEdit) {
         Task curTask = this.taskList.get(indexToEdit);
         curTask.markAsUndone();
-        Ui.markTaskAsUndone(curTask);
+        return Ui.markTaskAsUndone(curTask);
     }
 
     /**
@@ -86,11 +86,11 @@ public class TaskList {
      *
      * @param indexToEdit A 0-indexed position of the task to delete
      */
-    public void deleteTask(int indexToEdit) {
+    public String deleteTask(int indexToEdit) {
         Task curTask = this.taskList.get(indexToEdit);
         this.taskList.remove(indexToEdit);
         this.taskCount--;
-        Ui.removeTask(curTask, this.taskCount);
+        return Ui.removeTask(curTask, this.taskCount);
     }
 
     /**
@@ -100,7 +100,7 @@ public class TaskList {
      * @param taskInput The user input string for the task
      * @throws HamletException If the input for the task is invalid
      */
-    public void addTask(Command commandType, String taskInput) throws HamletException {
+    public String addTask(Command commandType, String taskInput) throws HamletException {
         Task newTask = null;
         switch (commandType) {
         case TODO: {
@@ -121,7 +121,7 @@ public class TaskList {
 
         this.taskList.add(newTask);
         this.taskCount++;
-        Ui.addNewTask(newTask, this.taskCount);
+        return Ui.addNewTask(newTask, this.taskCount);
     }
 
     /**

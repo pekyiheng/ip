@@ -8,78 +8,74 @@ import java.util.ArrayList;
 public class Ui {
     static final String LINE_BREAKS = "____________________________________________________________";
 
-    public static void printLineBreak() {
-        System.out.println(LINE_BREAKS);
+    public static String printLineBreak() {
+        return LINE_BREAKS;
     }
 
-    public static void welcomeMessage() {
-        printLineBreak();
-        System.out.println("Hello! I'm Hamlet\nHow may I help you?");
+    public static String welcomeMessage() {
+        return LINE_BREAKS + "Hello! I'm Hamlet\nHow may I help you?";
     }
 
-    public static void goodbyeMessage() {
-        printLineBreak();
-        System.out.println("Bye. Hope to see you again!\n");
-        printLineBreak();
+    public static String goodbyeMessage() {
+        return LINE_BREAKS + "Bye. Hope to see you again!\n\n" + LINE_BREAKS;
     }
 
-    public static void showName() {
-        System.out.println("\t" + "I am Hamlet!");
+    public static String showName() {
+        return "\t" + "I am Hamlet!";
     }
 
-    public static void showTasks(ArrayList<Task> inputs, int count) {
+    public static String showTasks(ArrayList<Task> inputs, int count) {
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < count; i++) {
             Task curTask = inputs.get(i);
-            System.out.printf("\t%d.%s", i + 1, curTask);
+            // Append each task to the string builder, adding a newline for separation
+            sb.append(String.format("\t%d.%s%n", i + 1, curTask));
         }
+        return sb.toString();
     }
 
-    public static void markTaskAsDone(Task curTask) {
-        System.out.print("Nice! I've marked this task as done:\n");
-        System.out.print(curTask);
+    public static String markTaskAsDone(Task curTask) {
+        return "Nice! I've marked this task as done:\n" + curTask;
     }
 
-    public static void markTaskAsUndone(Task curTask) {
-        System.out.print("Ok, I've marked this task as not done yet:\n");
-        System.out.print(curTask);
+    public static String markTaskAsUndone(Task curTask) {
+        return "Ok, I've marked this task as not done yet:\n" + curTask;
     }
 
-    public static void addNewTask(Task newTask, int count) {
-        System.out.print("Got it. I've added this task:\n");
-        System.out.print(newTask);
-        System.out.printf("Now you have %d tasks in the list.\n", count);
+    public static String addNewTask(Task newTask, int count) {
+        return String.format("Got it. I've added this task:\n%s\nNow you have %d tasks in the list.\n",
+                newTask, count);
     }
 
-    public static void removeTask(Task taskToRemove, int count) {
-        System.out.print(" Noted. I've removed this task:\n");
-        System.out.print(taskToRemove);
-        System.out.printf("Now you have %d tasks in the list.\n", count);
+    public static String removeTask(Task taskToRemove, int count) {
+        return String.format("Noted. I've removed this task:\n%s\nNow you have %d tasks in the list.\n",
+                taskToRemove, count);
     }
 
-    public static void showHappenings(String deadlinesOnDate, String eventsOnDate) {
-        System.out.println("Deadline:\n" + deadlinesOnDate + "\nEvents:\n" + eventsOnDate);
+    public static String showHappenings(String deadlinesOnDate, String eventsOnDate) {
+        return "Deadline:\n" + deadlinesOnDate + "\nEvents:\n" + eventsOnDate;
     }
 
-    public static void showFinds(String resultFromMatchFind) {
-        printLineBreak();
-        System.out.println("Here are the matching tasks in your list:");
-        System.out.println(resultFromMatchFind);
-        printLineBreak();
+    public static String showFinds(String resultFromMatchFind) {
+        return LINE_BREAKS +
+                "Here are the matching tasks in your list:\n" +
+                resultFromMatchFind + "\n" +
+                LINE_BREAKS;
     }
 
-    public static void showErrorMessage(String message) {
-        System.out.println(message);
+    public static String showErrorMessage(String message) {
+        return message;
     }
 
-    public static void showDateTimeParseExceptionMessage() {
-        System.out.println("Invalid date format. Please use YYYY-MM-DD");
+    public static String showDateTimeParseExceptionMessage() {
+        return "Invalid date format. Please use YYYY-MM-DD";
     }
 
-    public static void writeToFileMessage(Result result) {
+    public static String writeToFileMessage(Result result) {
         if (result.equals(Result.SUCCESS)) {
-            System.out.println("Wrote to file");
+            return "Wrote to file";
         } else {
-            System.out.println("Failed to write to file.");
+            return "Failed to write to file.";
         }
     }
 }
