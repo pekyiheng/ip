@@ -4,6 +4,8 @@ import hamlet.enums.Result;
 import hamlet.task.Task;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class Ui {
     static final String LINE_BREAKS = "___________________________________________________";
@@ -25,6 +27,12 @@ public class Ui {
     }
 
     public static String showTasks(ArrayList<Task> inputs, int count) {
+
+        return IntStream.range(0, count)
+                .mapToObj(i -> String.format("\t%d.%s", i + 1, inputs.get(i)))
+                .collect(Collectors.joining(System.lineSeparator()));
+
+        /* Original code
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < count; i++) {
             Task curTask = inputs.get(i);
@@ -32,6 +40,7 @@ public class Ui {
             sb.append(String.format("\t%d.%s%n", i + 1, curTask));
         }
         return sb.toString();
+         */
     }
 
     public static String markTaskAsDone(Task curTask) {
