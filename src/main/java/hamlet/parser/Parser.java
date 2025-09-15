@@ -13,6 +13,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class Parser {
     static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -93,6 +94,30 @@ public class Parser {
      */
     public static String convertArrToString(ArrayList<Task> inputs) {
         StringBuilder sb = new StringBuilder();
+
+        return inputs.stream()
+                .map(task -> {
+                    sb.append(task.getShorthand())
+                        .append(",")
+                        .append(task.isDone())
+                        .append(",")
+                        .append(task.getDescription());
+
+                    if (task instanceof Deadline) {
+                        sb.append(",")
+                            .append(((Deadline) task).getBy());
+                    } else if (task instanceof Event) {
+                        sb.append(",")
+                            .append(((Event) task).getFrom())
+                            .append(",")
+                            .append(((Event) task).getTo());
+                    }
+
+                    return sb.toString();
+                })
+                .collect(Collectors.joining("\n"));
+
+        /* Original code
         for (Task task : inputs) {
             sb.append(task.getShorthand()).append(",").append(task.isDone()).append(",").append(task.getDescription());
             if (task instanceof Deadline) {
@@ -103,6 +128,7 @@ public class Parser {
             sb.append("\n");
         }
         return sb.toString();
+         */
     }
 
     /**
