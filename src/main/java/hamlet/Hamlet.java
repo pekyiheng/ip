@@ -38,54 +38,76 @@ public class Hamlet {
     public String getResponse(String userInput) {
         try {
             commandType = Command.checkCommand(userInput);
-            switch (commandType) {
-            case NAME:
-                return Ui.showName();
+            return executeCommand(commandType, userInput);
 
-            case LIST:
-                return Ui.showTasks(taskList.gettaskList(), taskList.getCount());
-
-            case MARK: {
-                int indexToEdit = Parser.getIndexToEdit(userInput);
-                return taskList.markTaskAsDone(indexToEdit);
-            }
-
-            case UNMARK: {
-                int indexToEdit = Parser.getIndexToEdit(userInput);
-                return taskList.markTaskAsUndone(indexToEdit);
-            }
-
-            case TODO, DEADLINE, EVENT: {
-                return taskList.addTask(commandType, userInput);
-            }
-
-            case DELETE: {
-                int indexToEdit = Parser.getIndexToEdit(userInput);
-                return taskList.deleteTask(indexToEdit);
-            }
-            case HAPPENING: {
-                String[] resultFromMatchHappenings = Parser.matchHappenings(userInput, taskList.gettaskList(), taskList.getCount());
-                return Ui.showHappenings(resultFromMatchHappenings[0], resultFromMatchHappenings[1]);
-            }
-            case FIND:
-                String resultFromMatchFind = Parser.matchFind(userInput, taskList.gettaskList(), taskList.getCount());
-                return Ui.showFinds(resultFromMatchFind);
-            case INVALID:
-                throw new HamletException();
-            }
         } catch (HamletException err) {
             return Ui.showErrorMessage(err.toString());
         } catch (DateTimeParseException dateTimeParseException) {
             return Ui.showDateTimeParseExceptionMessage();
         }
-        return Ui.printLineBreak();
+        //return Ui.printLineBreak();
 
+    }
+
+    public String executeCommand(Command commandType, String userInput) throws HamletException{
+        switch (commandType) {
+        case NAME:
+            return Ui.showName();
+
+        case LIST:
+            return Ui.showTasks(taskList.gettaskList(), taskList.getCount());
+
+        case MARK: {
+            int indexToEdit = Parser.getIndexToEdit(userInput);
+            return taskList.markTaskAsDone(indexToEdit);
+        }
+
+        case UNMARK: {
+            int indexToEdit = Parser.getIndexToEdit(userInput);
+            return taskList.markTaskAsUndone(indexToEdit);
+        }
+
+        case TODO, DEADLINE, EVENT: {
+            return taskList.addTask(commandType, userInput);
+        }
+
+        case DELETE: {
+            int indexToEdit = Parser.getIndexToEdit(userInput);
+            return taskList.deleteTask(indexToEdit);
+        }
+        case HAPPENING: {
+            String[] resultFromMatchHappenings = Parser.matchHappenings(userInput, taskList.gettaskList(), taskList.getCount());
+            return Ui.showHappenings(resultFromMatchHappenings[0], resultFromMatchHappenings[1]);
+        }
+        case FIND:
+            String resultFromMatchFind = Parser.matchFind(userInput, taskList.gettaskList(), taskList.getCount());
+            return Ui.showFinds(resultFromMatchFind);
+        case BYE:
+            String textToSave = Parser.convertArrToString(taskList.gettaskList());
+            StringBuilder returnString = new StringBuilder();
+
+            //writes and saves to file in csv format
+            try {
+                storage.writeToFile(textToSave);
+                returnString.append(Ui.writeToFileMessage(Result.SUCCESS)).append("\n");
+
+            } catch (IOException e) {
+                Ui.writeToFileMessage(Result.FAILURE);
+                returnString.append(Ui.writeToFileMessage(Result.FAILURE)).append("\n");
+            }
+            returnString.append(Ui.goodbyeMessage());
+            return returnString.toString();
+        case INVALID:
+            throw new HamletException();
+        }
+        return Ui.printLineBreak();
     }
 
     public Command getCommandType() {
         return commandType;
     }
 
+    /*
     /**
      * The main execution loop of application
      * <p>
@@ -97,6 +119,8 @@ public class Hamlet {
      * @throws DateTimeParseException If date string provided by user cannot be parsed properly
      * @throws HamletException If an invalid command or format is provided.
      */
+
+    /*
     public void run() {
         Scanner scanner = new Scanner(System.in);
         Ui.welcomeMessage();
@@ -174,13 +198,15 @@ public class Hamlet {
         Ui.goodbyeMessage();
     }
 
+     */
+
     /**
      * THe main entry point of application
      *
      * @param args Command-line arguments
      */
     public static void main(String[] args) {
-        new Hamlet().run();
+        //new Hamlet().run();
     }
 
 }
