@@ -13,7 +13,8 @@ public enum Command {
     INVALID,
     HAPPENING,
     FIND,
-    SORT;
+    SORT,
+    SORTBYDONE;
 
     public static Command checkCommand(String input) {
         String trimmedInput = input.trim();
@@ -50,8 +51,11 @@ public enum Command {
         if (trimmedInput.startsWith("find")) {
             return FIND;
         }
-        if (trimmedInput.startsWith("sort")) {
+        if (trimmedInput.equals("sort")) {
             return SORT;
+        }
+        if (trimmedInput.equals("sort done")) {
+            return SORTBYDONE;
         }
         return INVALID;
     }

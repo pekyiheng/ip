@@ -76,6 +76,9 @@ public class Hamlet {
             case SORT:
                 this.taskList.sortTaskList();
                 return Ui.showTasks(taskList.gettaskList(), taskList.getCount());
+            case SORTBYDONE:
+                this.taskList.sortTaskListByDone();
+                return Ui.showTasks(taskList.gettaskList(), taskList.getCount());
             case BYE:
                 String textToSave = Parser.convertArrToString(taskList.gettaskList());
                 StringBuilder returnString = new StringBuilder();

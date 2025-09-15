@@ -11,6 +11,7 @@ import java.io.FileNotFoundException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Scanner;
 
 /**
@@ -180,6 +181,15 @@ public class TaskList {
      */
     public void sortTaskList() {
         this.taskList.sort(new TaskComparator());
+    }
+
+    /**
+     * Sorts the task list first by chronological order then by alphabetical of description
+     */
+    public void sortTaskListByDone() {
+        Comparator<Task> combinedComparator = Comparator.comparing(Task::isDone)
+                                                            .thenComparing(new TaskComparator());
+        this.taskList.sort(combinedComparator);
     }
 }
 
