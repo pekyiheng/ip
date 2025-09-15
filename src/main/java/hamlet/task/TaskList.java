@@ -171,6 +171,6 @@ public class TaskList {
                 this.taskList.add(newEvent);
                 break;
             }
-        }
     }
 }
+
