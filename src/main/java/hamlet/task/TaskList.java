@@ -132,8 +132,18 @@ public class TaskList {
     private void readFileContents() throws FileNotFoundException {
         Scanner s = new Scanner(taskFile); // create a Scanner using the File as the source
         while (s.hasNext()) {
-            String currentRow = s.nextLine();
-            String[] values = currentRow.split(",");
+            String currentLine = s.nextLine();
+            readLine(currentLine);
+        }
+    }
+
+    /**
+     * Reads the contents of the file and populates the task list
+     *
+     * @param currentLine The current line to be read and added to taskList
+     */
+    private void readLine(String currentLine) {
+            String[] values = currentLine.split(",");
             this.taskCount++;
             switch (values[0]) {
             case "T":
