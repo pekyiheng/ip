@@ -4,6 +4,7 @@ import hamlet.enums.Command;
 import hamlet.exception.HamletException;
 import hamlet.parser.Parser;
 import hamlet.ui.Ui;
+import hamlet.utils.TaskComparator;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -172,6 +173,13 @@ public class TaskList {
                 this.taskList.add(newEvent);
                 break;
             }
+    }
+
+    /**
+     * Sorts the task list first by chronological order then by alphabetical of description
+     */
+    public void sortTaskList() {
+        this.taskList.sort(new TaskComparator());
     }
 }
 

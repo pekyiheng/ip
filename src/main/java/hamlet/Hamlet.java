@@ -45,8 +45,8 @@ public class Hamlet {
             case NAME:
                 return Ui.showName();
 
-        case LIST:
-            return Ui.showTasks(taskList.gettaskList(), taskList.getCount());
+            case LIST:
+                return Ui.showTasks(taskList.gettaskList(), taskList.getCount());
 
             case MARK: {
                 int indexToEdit = Parser.getIndexToEdit(userInput);
@@ -73,6 +73,9 @@ public class Hamlet {
             case FIND:
                 String resultFromMatchFind = Parser.matchFind(userInput, taskList.gettaskList(), taskList.getCount());
                 return Ui.showFinds(resultFromMatchFind);
+            case SORT:
+                this.taskList.sortTaskList();
+                return Ui.showTasks(taskList.gettaskList(), taskList.getCount());
             case BYE:
                 String textToSave = Parser.convertArrToString(taskList.gettaskList());
                 StringBuilder returnString = new StringBuilder();
