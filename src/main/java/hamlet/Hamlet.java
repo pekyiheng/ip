@@ -86,6 +86,7 @@ public class Hamlet {
         return commandType;
     }
 
+    /*
     /**
      * The main execution loop of application
      * <p>
@@ -97,6 +98,8 @@ public class Hamlet {
      * @throws DateTimeParseException If date string provided by user cannot be parsed properly
      * @throws HamletException If an invalid command or format is provided.
      */
+
+    /*
     public void run() {
         Scanner scanner = new Scanner(System.in);
         Ui.welcomeMessage();
@@ -173,6 +176,8 @@ public class Hamlet {
         }
         Ui.goodbyeMessage();
     }
+     */
+
 
     /**
      * THe main entry point of application
@@ -180,7 +185,7 @@ public class Hamlet {
      * @param args Command-line arguments
      */
     public static void main(String[] args) {
-        new Hamlet().run();
+        //new Hamlet().run();
     }
 
 }
