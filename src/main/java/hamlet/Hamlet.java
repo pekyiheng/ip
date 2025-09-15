@@ -45,8 +45,8 @@ public class Hamlet {
             case NAME:
                 return Ui.showName();
 
-            case LIST:
-                return Ui.showTasks(taskList.gettaskList(), taskList.getCount());
+        case LIST:
+            return Ui.showTasks(taskList.gettaskList(), taskList.getCount());
 
             case MARK: {
                 int indexToEdit = Parser.getIndexToEdit(userInput);
@@ -73,6 +73,21 @@ public class Hamlet {
             case FIND:
                 String resultFromMatchFind = Parser.matchFind(userInput, taskList.gettaskList(), taskList.getCount());
                 return Ui.showFinds(resultFromMatchFind);
+            case BYE:
+                String textToSave = Parser.convertArrToString(taskList.gettaskList());
+                StringBuilder returnString = new StringBuilder();
+
+                //writes and saves to file in csv format
+                try {
+                    storage.writeToFile(textToSave);
+                    returnString.append(Ui.writeToFileMessage(Result.SUCCESS)).append("\n");
+
+                } catch (IOException e) {
+                    Ui.writeToFileMessage(Result.FAILURE);
+                    returnString.append(Ui.writeToFileMessage(Result.FAILURE)).append("\n");
+                }
+                returnString.append(Ui.goodbyeMessage());
+                return returnString.toString();
             case INVALID:
                 throw new HamletException();
             }
