@@ -6,7 +6,7 @@ import hamlet.task.Task;
 import java.util.ArrayList;
 
 public class Ui {
-    static final String LINE_BREAKS = "____________________________________________________________";
+    static final String LINE_BREAKS = "___________________________________________________";
 
     public static String printLineBreak() {
         return LINE_BREAKS;

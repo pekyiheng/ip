@@ -44,6 +44,9 @@ public class MainWindow extends AnchorPane {
         String input = userInput.getText();
         String response = hamlet.getResponse(input);
         Command commandType = hamlet.getCommandType();
+        if (commandType == Command.BYE) {
+            System.exit(0);
+        }
         dialogContainer.getChildren().addAll(
                 DialogBox.getUserDialog(input, userImage),
                 DialogBox.getHamletDialog(response, dukeImage, commandType)
