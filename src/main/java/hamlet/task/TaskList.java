@@ -131,6 +131,7 @@ public class TaskList {
      */
     private void readFileContents() throws FileNotFoundException {
         Scanner s = new Scanner(taskFile); // create a Scanner using the File as the source
+
         while (s.hasNext()) {
             String currentLine = s.nextLine();
             readLine(currentLine);

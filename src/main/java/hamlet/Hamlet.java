@@ -36,71 +36,71 @@ public class Hamlet {
      * Generates a response for the user's chat message.
      */
     public String getResponse(String userInput) {
+        assert this.taskList != null: "taskList should be initialized";
+        assert this.storage != null: "storage should be initialized";
+
         try {
             commandType = Command.checkCommand(userInput);
-            return executeCommand(commandType, userInput);
+            switch (commandType) {
+            case NAME:
+                return Ui.showName();
+
+        case LIST:
+            return Ui.showTasks(taskList.gettaskList(), taskList.getCount());
+
+            case MARK: {
+                int indexToEdit = Parser.getIndexToEdit(userInput);
+                return taskList.markTaskAsDone(indexToEdit);
+            }
+
+            case UNMARK: {
+                int indexToEdit = Parser.getIndexToEdit(userInput);
+                return taskList.markTaskAsUndone(indexToEdit);
+            }
+
+            case TODO, DEADLINE, EVENT: {
+                return taskList.addTask(commandType, userInput);
+            }
+
+            case DELETE: {
+                int indexToEdit = Parser.getIndexToEdit(userInput);
+                return taskList.deleteTask(indexToEdit);
+            }
+            case HAPPENING: {
+                String[] resultFromMatchHappenings = Parser.matchHappenings(userInput, taskList.gettaskList(), taskList.getCount());
+                return Ui.showHappenings(resultFromMatchHappenings[0], resultFromMatchHappenings[1]);
+            }
+            case FIND:
+                String resultFromMatchFind = Parser.matchFind(userInput, taskList.gettaskList(), taskList.getCount());
+                return Ui.showFinds(resultFromMatchFind);
+            case BYE:
+                String textToSave = Parser.convertArrToString(taskList.gettaskList());
+                StringBuilder returnString = new StringBuilder();
+
+                //writes and saves to file in csv format
+                try {
+                    storage.writeToFile(textToSave);
+                    returnString.append(Ui.writeToFileMessage(Result.SUCCESS)).append("\n");
+
+                } catch (IOException e) {
+                    Ui.writeToFileMessage(Result.FAILURE);
+                    returnString.append(Ui.writeToFileMessage(Result.FAILURE)).append("\n");
+                }
+                returnString.append(Ui.goodbyeMessage());
+                return returnString.toString();
+            case INVALID:
+                throw new HamletException();
+            }
+
+            assert false: "The code should return a response or throw an error that is handled by the try-catch block";
 
         } catch (HamletException err) {
             return Ui.showErrorMessage(err.toString());
         } catch (DateTimeParseException dateTimeParseException) {
             return Ui.showDateTimeParseExceptionMessage();
         }
-        //return Ui.printLineBreak();
-
-    }
-
-    public String executeCommand(Command commandType, String userInput) throws HamletException{
-        switch (commandType) {
-        case NAME:
-            return Ui.showName();
-
-        case LIST:
-            return Ui.showTasks(taskList.gettaskList(), taskList.getCount());
-
-        case MARK: {
-            int indexToEdit = Parser.getIndexToEdit(userInput);
-            return taskList.markTaskAsDone(indexToEdit);
-        }
-
-        case UNMARK: {
-            int indexToEdit = Parser.getIndexToEdit(userInput);
-            return taskList.markTaskAsUndone(indexToEdit);
-        }
-
-        case TODO, DEADLINE, EVENT: {
-            return taskList.addTask(commandType, userInput);
-        }
-
-        case DELETE: {
-            int indexToEdit = Parser.getIndexToEdit(userInput);
-            return taskList.deleteTask(indexToEdit);
-        }
-        case HAPPENING: {
-            String[] resultFromMatchHappenings = Parser.matchHappenings(userInput, taskList.gettaskList(), taskList.getCount());
-            return Ui.showHappenings(resultFromMatchHappenings[0], resultFromMatchHappenings[1]);
-        }
-        case FIND:
-            String resultFromMatchFind = Parser.matchFind(userInput, taskList.gettaskList(), taskList.getCount());
-            return Ui.showFinds(resultFromMatchFind);
-        case BYE:
-            String textToSave = Parser.convertArrToString(taskList.gettaskList());
-            StringBuilder returnString = new StringBuilder();
-
-            //writes and saves to file in csv format
-            try {
-                storage.writeToFile(textToSave);
-                returnString.append(Ui.writeToFileMessage(Result.SUCCESS)).append("\n");
-
-            } catch (IOException e) {
-                Ui.writeToFileMessage(Result.FAILURE);
-                returnString.append(Ui.writeToFileMessage(Result.FAILURE)).append("\n");
-            }
-            returnString.append(Ui.goodbyeMessage());
-            return returnString.toString();
-        case INVALID:
-            throw new HamletException();
-        }
         return Ui.printLineBreak();
+
     }
 
     public Command getCommandType() {
@@ -197,8 +197,8 @@ public class Hamlet {
         }
         Ui.goodbyeMessage();
     }
-
      */
+
 
     /**
      * THe main entry point of application
