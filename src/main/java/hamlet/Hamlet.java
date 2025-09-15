@@ -36,6 +36,9 @@ public class Hamlet {
      * Generates a response for the user's chat message.
      */
     public String getResponse(String userInput) {
+        assert this.taskList != null: "taskList should be initialized";
+        assert this.storage != null: "storage should be initialized";
+
         try {
             commandType = Command.checkCommand(userInput);
             switch (commandType) {
@@ -73,6 +76,9 @@ public class Hamlet {
             case INVALID:
                 throw new HamletException();
             }
+
+            assert false: "The code should return a response or throw an error that is handled by the try-catch block";
+
         } catch (HamletException err) {
             return Ui.showErrorMessage(err.toString());
         } catch (DateTimeParseException dateTimeParseException) {
