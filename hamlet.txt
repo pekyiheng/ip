@@ -2,3 +2,4 @@ T,0,submit screenshot
 T,0,submit photo
 D,0,CS2103 project,2025-09-19
 E,0,party,2025-10-10,2025-10-11
+T,0,wash shoes
