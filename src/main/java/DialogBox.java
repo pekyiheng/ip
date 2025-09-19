@@ -100,6 +100,9 @@ public class DialogBox extends HBox {
         case DELETE:
             dialog.getStyleClass().add("delete-label");
             break;
+        case INVALID:
+            dialog.getStyleClass().add("invalid-label");
+            break;
         default:
             // no styling applied
         }

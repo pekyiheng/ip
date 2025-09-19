@@ -39,3 +39,7 @@
 .delete-label {
     -fx-background-color: lightpink;
 }
+
+.invalid-label {
+    -fx-background-color: red;
+}
