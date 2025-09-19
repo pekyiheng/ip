@@ -1,5 +1,9 @@
 package hamlet.exception;
 
+/**
+ * Represents an exception specific to the Hamlet application.
+ * This exception is typically thrown when a user provides a command that is not recognized.
+ */
 public class HamletException extends Exception {
 
     @Override

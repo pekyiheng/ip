@@ -1,5 +1,9 @@
 package hamlet.task;
 
+/**
+ * Represents a todo task.
+ * A Todo object has a description and a status (done or not done).
+ */
 public class Todo extends Task {
     public Todo(String description) {
         super(description);

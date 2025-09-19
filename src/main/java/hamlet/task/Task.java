@@ -1,9 +1,19 @@
 package hamlet.task;
 
+/**
+ * Represents a generic task.
+ * A Task object has a description and a status (done or not done).
+ */
 public class Task {
     protected String description;
     protected boolean isDone;
 
+    /**
+     * Constructs a new Task with the given description.
+     * The task is initially marked as not done.
+     *
+     * @param description The description of the task.
+     */
     public Task(String description) {
         this.description = description;
         this.isDone = false;

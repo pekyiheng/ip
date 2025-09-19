@@ -1,11 +1,5 @@
 package hamlet.task;
 
-import hamlet.enums.Command;
-import hamlet.exception.HamletException;
-import hamlet.parser.Parser;
-import hamlet.ui.Ui;
-import hamlet.utils.TaskComparator;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.time.LocalDate;
@@ -14,6 +8,12 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Scanner;
 
+import hamlet.enums.Command;
+import hamlet.exception.HamletException;
+import hamlet.parser.Parser;
+import hamlet.ui.Ui;
+import hamlet.utils.TaskComparator;
+
 /**
  * Manages a list of tasks, including adding, deleting, and marking tasks as done.
  * <p>
@@ -21,10 +21,12 @@ import java.util.Scanner;
  * </p>
  */
 public class TaskList {
-    static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-    private ArrayList<Task> taskList = new ArrayList<>(100);
+    /** Formatter for date strings in yyyy-MM-dd format. */
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+    private final ArrayList<Task> taskList = new ArrayList<>(100);
     private int taskCount = 0;
-    private File taskFile;
+    private final File taskFile;
 
     /**
      * Constructs a TaskList object, loading tasks from a specified file.
@@ -32,6 +34,7 @@ public class TaskList {
      *     If file exists, reads the contents and populates the private task list.
      *     If file does not exist, prints an error message
      * </p>
+     *
      * @param taskFile The file object which contains the task data.
      */
     public TaskList(File taskFile) {
@@ -44,9 +47,9 @@ public class TaskList {
     }
 
     /**
-     * Returns current number of tasks in the list
+     * Returns current number of tasks in the list.
      *
-     * @return The number of tasl in list
+     * @return The number of tasks in list
      */
     public int getCount() {
         return this.taskCount;
@@ -62,7 +65,7 @@ public class TaskList {
     }
 
     /**
-     * Marks a task as done and prints a mark as done statement
+     * Marks a task as done and prints a mark as done statement.
      *
      * @param indexToEdit A 0-indexed position of the task to mark as done
      */
@@ -73,7 +76,7 @@ public class TaskList {
     }
 
     /**
-     * Marks a task as undone and prints a mark as undone statement
+     * Marks a task as undone and prints a mark as undone statement.
      *
      * @param indexToEdit A 0-indexed position of the task to mark as undone
      */
@@ -84,7 +87,7 @@ public class TaskList {
     }
 
     /**
-     * Deletes a task based on its 0-indexed position in ArrayList
+     * Deletes a task based on its 0-indexed position in ArrayList.
      *
      * @param indexToEdit A 0-indexed position of the task to delete
      */
@@ -96,29 +99,26 @@ public class TaskList {
     }
 
     /**
-     * Adds a new task to the list based on the command type and user input
+     * Adds a new task to the list based on the command type and user input.
      *
      * @param commandType The type of task to add to list
      * @param taskInput The user input string for the task
      * @throws HamletException If the input for the task is invalid
      */
     public String addTask(Command commandType, String taskInput) throws HamletException {
-        Task newTask = null;
+        Task newTask;
         switch (commandType) {
-        case TODO: {
+        case TODO:
             newTask = Parser.matchInputToDo(taskInput);
             break;
-        }
-
-        case DEADLINE: {
+        case DEADLINE:
             newTask = Parser.matchInputDeadline(taskInput);
             break;
-        }
-
-        case EVENT: {
+        case EVENT:
             newTask = Parser.matchInputEvent(taskInput);
             break;
-        }
+        default:
+            throw new HamletException();
         }
 
         this.taskList.add(newTask);
@@ -127,69 +127,74 @@ public class TaskList {
     }
 
     /**
-     * Reads the contents of the file and populates the task list
+     * Reads the contents of the file and populates the task list.
      *
      * @throws FileNotFoundException If specified file does not exist
      */
     private void readFileContents() throws FileNotFoundException {
         Scanner s = new Scanner(taskFile); // create a Scanner using the File as the source
-
         while (s.hasNext()) {
             String currentLine = s.nextLine();
             readLine(currentLine);
         }
+        s.close();
     }
 
     /**
-     * Reads the contents of the file and populates the task list
+     * Reads a line from the file and populates the task list.
      *
      * @param currentLine The current line to be read and added to taskList
      */
     private void readLine(String currentLine) {
-            String[] values = currentLine.split(",");
-            this.taskCount++;
-            switch (values[0]) {
-            case "T":
-                Todo newTodo = new Todo(values[2]);
-                if (values[1].equals("1")) {
-                    newTodo.markAsDone();
-                }
-                this.taskList.add(newTodo);
-                break;
-            case "D":
-                LocalDate deadlineDate = LocalDate.parse(values[3], DATE_TIME_FORMATTER);
-                Deadline newDeadline = new Deadline(values[2], deadlineDate);
-                if (values[1].equals("1")) {
-                    newDeadline.markAsDone();
-                }
-                this.taskList.add(newDeadline);
-                break;
-            case "E":
-                LocalDate fromDate = LocalDate.parse(values[3], DATE_TIME_FORMATTER);
-                LocalDate toDate = LocalDate.parse(values[4], DATE_TIME_FORMATTER);
-                Event newEvent = new Event(values[2], fromDate, toDate);
-                if (values[1].equals("1")) {
-                    newEvent.markAsDone();
-                }
-                this.taskList.add(newEvent);
-                break;
+        String[] values = currentLine.split(",");
+        this.taskCount++;
+        switch (values[0]) {
+        case "T": {
+            Todo newTodo = new Todo(values[2]);
+            if (values[1].equals("1")) {
+                newTodo.markAsDone();
             }
+            this.taskList.add(newTodo);
+            break;
+        }
+        case "D": {
+            LocalDate deadlineDate = LocalDate.parse(values[3], DATE_TIME_FORMATTER);
+            Deadline newDeadline = new Deadline(values[2], deadlineDate);
+            if (values[1].equals("1")) {
+                newDeadline.markAsDone();
+            }
+            this.taskList.add(newDeadline);
+            break;
+        }
+        case "E": {
+            LocalDate fromDate = LocalDate.parse(values[3], DATE_TIME_FORMATTER);
+            LocalDate toDate = LocalDate.parse(values[4], DATE_TIME_FORMATTER);
+            Event newEvent = new Event(values[2], fromDate, toDate);
+            if (values[1].equals("1")) {
+                newEvent.markAsDone();
+            }
+            this.taskList.add(newEvent);
+            break;
+        }
+        default:
+            // do nothing if line is unrecognized
+            break;
+        }
     }
 
     /**
-     * Sorts the task list first by chronological order then by alphabetical of description
+     * Sorts the task list first by chronological order then by alphabetical of description.
      */
     public void sortTaskList() {
         this.taskList.sort(new TaskComparator());
     }
 
     /**
-     * Sorts the task list first by chronological order then by alphabetical of description
+     * Sorts the task list first by completion status, then by chronological order then by alphabetical of description.
      */
     public void sortTaskListByDone() {
-        Comparator<Task> combinedComparator = Comparator.comparing(Task::isDone)
-                                                            .thenComparing(new TaskComparator());
+        Comparator<Task> combinedComparator =
+                Comparator.comparing(Task::isDone).thenComparing(new TaskComparator());
         this.taskList.sort(combinedComparator);
     }
 }
-

@@ -1,5 +1,12 @@
 package hamlet.enums;
 
+/**
+ * Represents the different types of commands supported by Hamlet.
+ * <p>
+ * Each constant corresponds to a user command such as {@code TODO}, {@code DEADLINE},
+ * {@code EVENT}, or control commands like {@code BYE} and {@code LIST}.
+ * </p>
+ */
 public enum Command {
     NAME,
     BYE,
@@ -16,6 +23,12 @@ public enum Command {
     SORT,
     SORTBYDONE;
 
+    /**
+     * Determines the {@link Command} type from a given user input string.
+     *
+     * @param input the raw user input
+     * @return the corresponding {@link Command} if matched, otherwise {@code INVALID}
+     */
     public static Command checkCommand(String input) {
         String trimmedInput = input.trim();
         if (trimmedInput.equals("what is your name")) {
